@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>المالية والدفعات</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLwQp5dD4tFvFvC6+vR9rNq5lU6C4B0G2gQzG2p8h8jI9T2d1e0zG0a8F7J4sL+1Kz2F1w6a"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      .card-shadow {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      }
+      .cursor-pointer {
+        cursor: pointer;
+      }
+      .hover-bg-light:hover {
+        background-color: #f8f9fa !important;
+      }
+    </style>
+  </head>
+  <body class="bg-light">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark py-3 px-4 rounded-3 shadow-lg"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="image/img.png"
+            alt="Logo"
+            class="rounded-circle me-2"
+            width="64"
+            height="64"
+          />
+          برنامح الإعارة
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavDropdown"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">🏠 الرئيسية</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle active"
+                href="new-sub.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📝 الاشتراكات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="new-sub.html">اشتراك جديد</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="update-sub.html"
+                    >تعديل الاشتراك</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="renew-sub.html"
+                    >تجديد اشتراك</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="loan.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📚 الإعارات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="loan.html">إعارة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="return-loan.html">إرجاع</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="late-loan.html">إرجاع متأخر</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="reports.html"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                📈 التقارير
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="reports.html">تقارير عامة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="personal-report.html"
+                    >تقرير شخصي</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="request.html">الطلبات الاونلاين</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="alert2.html">التنبيهات</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-4">
+      <p class="small text-secondary text-center mb-4"></p>
+
+      <div class="card p-4 mb-4 card-shadow">
+        <h5 class="card-title fw-bold mb-3">البحث عن مشترك</h5>
+        <div class="d-flex flex-column flex-md-row gap-3 mb-3">
+          <input
+            type="text"
+            id="searchIdInput"
+            placeholder="ادخل اسم المشترك أو رقمه"
+            class="form-control"
+          />
+          <button class="btn btn-primary fw-bold flex-shrink-0">
+            <i class="fas fa-search"></i> بحث
+          </button>
+        </div>
+        <div id="searchResults" class="mt-4">
+          <div
+            class="p-3 bg-light rounded-3 shadow-sm mb-2 cursor-pointer hover-bg-light"
+          >
+            <h6 class="fw-bold">محمد السعدي</h6>
+            <p>#23456</p>
+          </div>
+        </div>
+        <hr class="my-4" />
+      </div>
+
+      <div id="subscriberDetailsSection" class="card p-4 card-shadow">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h5 class="card-title fw-bold mb-0">
+            <span id="subscriberName">محمد السعدي</span>
+          </h5>
+        </div>
+
+        <form
+          action="#"
+          method="post"
+          id="updateSubscriptionFinancial"
+          class="mb-4"
+        >
+          <h6 class="fw-bold mb-3">تفاصيل الاشتراك والمالية</h6>
+          <div class="row g-3">
+            <div class="col-md-4">
+              <label class="form-label fw-medium">نوع الاشتراك</label>
+              <br />
+              <input type="text" value="سنوي" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label fw-medium">الرسوم (شيكل)</label>
+              <input
+                name="subscription_fee"
+                id="subscription_fee"
+                type="number"
+                step="0.01"
+                class="form-control"
+                value="35.00"
+              />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label fw-medium">طريقة الدفع</label>
+              <br />
+              <input value="نقداً" class="form-control" readonly />
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">رقم الوصل</label>
+              <input
+                name="receipt_number"
+                id="receipt_number"
+                type="text"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label">نوع الاشتراك</label>
+              <select
+                name="subscription_type"
+                id="subscription_type"
+                class="form-select"
+              >
+                <option value="public_library" selected>مكتبة عامة</option>
+                <option value="children_library">مكتبة أطفال</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">تصنيف المشترك</label>
+              <select name="category" id="category" class="form-select">
+                <option value="regular" selected>شخص</option>
+                <option value="student">طالب</option>
+                <option value="municipality_employee">موظف بلدية</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label class="form-label">رقم الدفتر</label>
+              <input
+                name="book_number"
+                id="book_number"
+                type="text"
+                class="form-control"
+              />
+            </div>
+
+            <div class="col-12">
+              <label class="form-label fw-medium">ملاحظات</label>
+              <textarea
+                name="subscription_notes"
+                id="subscription_notes"
+                class="form-control"
+                rows="2"
+              ></textarea>
+            </div>
+          </div>
+        </form>
+
+        <div class="row g-2">
+          <div class="col-12 d-flex flex-wrap gap-2 mt-3">
+            <button class="btn btn-warning fw-bold">
+              <i class="fas fa-sync-alt"></i> تجديد الاشتراك
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <h6 class="fw-bold mb-2">سجل المدفوعات</h6>
+          <div class="table-responsive bg-light rounded-3 shadow-sm">
+            <table class="table table-striped table-sm mb-0">
+              <thead>
+                <tr class="bg-secondary-subtle">
+                  <th class="py-2">تاريخ</th>
+                  <th class="py-2">المبلغ</th>
+                  <th class="py-2">طريقة الدفع</th>
+                  <th class="py-2">النوع</th>
+                  <th class="py-2">ملاحظات</th>
+                  <th class="py-2">الموظف</th>
+                </tr>
+              </thead>
+              <tbody id="paymentsTableBody">
+                <tr>
+                  <td class="py-2">2025-01-01</td>
+                  <td class="py-2">500.00</td>
+                  <td class="py-2">نقداً</td>
+                  <td class="py-2">اشتراك سنوي</td>
+                  <td class="py-2">دفعة أولى</td>
+                  <td class="py-2">الموظف 1</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="mt-4 mb-4">
+          <h6 class="fw-bold mb-2">سجل الإعارات</h6>
+          <div class="table-responsive bg-light rounded-3 shadow-sm">
+            <table class="table table-striped table-sm mb-0">
+              <thead>
+                <tr class="bg-secondary-subtle">
+                  <th class="py-2">باركود الكتاب</th>
+                  <th class="py-2">العنوان</th>
+                  <th class="py-2">تاريخ الإعارة</th>
+                  <th class="py-2">تاريخ الإرجاع</th>
+                  <th class="py-2">الحالة</th>
+                  <th class="py-2">الموظف المسؤول</th>
+                </tr>
+              </thead>
+              <tbody id="loansTableBody">
+                <tr>
+                  <td class="py-2">BK-456</td>
+                  <td class="py-2">كتاب عن برمجة الويب</td>
+                  <td class="py-2">2025-03-10</td>
+                  <td class="py-2">2025-03-24</td>
+                  <td class="py-2">تم الإرجاع</td>
+                  <td class="py-2">محمد</td>
+                </tr>
+                <tr>
+                  <td class="py-2">BK-789</td>
+                  <td class="py-2">مقدمة في الذكاء الاصطناعي</td>
+                  <td class="py-2">2025-04-15</td>
+                  <td class="py-2">2025-04-29</td>
+                  <td class="py-2">متأخر</td>
+                  <td class="py-2">أحمد</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const category = document.getElementById("category");
+      const feeInput = document.getElementById("subscription_fee");
+      const subscriptionType = document.getElementById("subscription_type");
+
+      function updateSubscriptionFee() {
+        const selectedCategory = category.value;
+        let fee = 35.0;
+
+        if (selectedCategory === "municipality_employee") {
+          fee = 0.0;
+        } else if (selectedCategory === "student") {
+          fee = 25.0;
+        } else if (selectedCategory === "regular") {
+          fee = 35.0;
+        }
+
+        feeInput.value = fee.toFixed(2);
+        
+      }
+
+      subscriptionType.addEventListener("change", updateSubscriptionFee);
+      category.addEventListener("change", updateSubscriptionFee);
+
+      document.addEventListener("DOMContentLoaded", updateSubscriptionFee);
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>تعديل الاشتراك</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <style>
+      .dropdown-menu.show {
+        text-align: right;
+      }
+      .card-header-custom {
+        background-color: #343a40;
+        color: white;
+      }
+      .form-label.required::after {
+        content: " *";
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark py-3 px-4 rounded-3 shadow-lg"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="image/img.png"
+            alt="Logo"
+            class="rounded-circle me-2"
+            width="64"
+            height="64"
+          />
+          برنامج الإعارة
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavDropdown"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">🏠 الرئيسية</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle active"
+                href="new-sub.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📝 الاشتراكات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="new-sub.html">اشتراك جديد</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="update-sub.html"
+                    >تعديل الاشتراك</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="renew-sub.html"
+                    >تجديد اشتراك</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="loan.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📚 الإعارات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="loan.html">إعارة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="return-loan.html">إرجاع</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="late-loan.html">إرجاع متأخر</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="reports.html"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                📈 التقارير
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="reports.html">تقارير عامة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="personal-report.html"
+                    >تقرير شخصي</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="request.html">الطلبات الاونلاين</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="alert2.html">التنبيهات</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container my-4">
+      <div class="row mb-4">
+        <div class="col-12">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">البحث عن مشترك</h5>
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="ادخل رقم المشترك أو الاسم"
+                />
+                <button class="btn btn-primary" type="button">بحث</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row g-3">
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-header card-header-custom">بيانات المشترك</div>
+            <div class="card-body">
+              <form id="updateSubscriptionForm">
+                <div class="row g-3">
+                  <div class="col-md-3">
+                    <label class="form-label">رقم المشترك</label>
+                    <input
+                      name="subscriber_id"
+                      id="subscriber_id"
+                      class="form-control"
+                      value="SUB-0001"
+                      readonly
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label required">اسم المشترك</label>
+                    <input
+                      name="full_name"
+                      id="full_name"
+                      class="form-control"
+                      value="أحمد محمد"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-4">
+                    <label class="form-label">تاريخ الميلاد</label>
+                    <input
+                      name="birth_date"
+                      id="birth_date"
+                      type="date"
+                      class="form-control"
+                      value="1995-03-20"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">الجنس</label>
+                    <select name="gender" id="gender" class="form-select">
+                      <option value="male">ذكر</option>
+                      <option value="female">أنثى</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">رقم الهوية</label>
+                    <input
+                      name="id_number"
+                      id="id_number"
+                      class="form-control"
+                      value="123456789"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">المحافظة</label>
+                    <select name="province" id="province" class="form-select">
+                      <option value="أريحا والأغوار">أريحا والأغوار</option>
+                      <option value="بيت لحم">بيت لحم</option>
+                      <option value="الخليل">الخليل</option>
+                      <option value="القدس">القدس</option>
+                      <option value="دير البلح">دير البلح</option>
+                      <option value="رفح">رفح</option>
+                      <option value="سلفيت">سلفيت</option>
+                      <option value="شمال غزة">شمال غزة</option>
+                      <option value="طوباس">طوباس</option>
+                      <option value="طولكرم">طولكرم</option>
+                      <option value="غزة">غزة</option>
+                      <option value="قلقيلية">قلقيلية</option>
+                      <option value="خان يونس">خان يونس</option>
+                      <option value="نابلس">نابلس</option>
+                      <option value="جنين">جنين</option>
+                      <option value="رام الله والبيرة">رام الله والبيرة</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">الوظيفة</label>
+                    <input
+                      name="work"
+                      id="work"
+                      type="text"
+                      class="form-control"
+                      value="مدرس"
+                    />
+                  </div>
+                  <div class="col-md-4">
+                    <label class="form-label">رقم الموبايل</label>
+                    <div id="mobileNumbersGroup">
+                      <div class="input-group mb-2">
+                        <input
+                          name="phone_mobile[]"
+                          type="tel"
+                          class="form-control"
+                          value="+970599999999"
+                          placeholder="رقم الموبايل"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-outline-success"
+                          onclick="addMobileField(this)"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <label class="form-label">العنوان</label>
+                    <div class="row g-2">
+                      <div class="col-md-4">
+                        <input
+                          name="address1"
+                          id="address1"
+                          type="text"
+                          class="form-control"
+                          placeholder="القرية/الضاحية"
+                          value="شارع البلدة"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <input
+                          name="address2"
+                          id="address2"
+                          type="text"
+                          class="form-control"
+                          placeholder="الحي"
+                          value="حي المركز"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <input
+                          name="address3"
+                          id="address3"
+                          type="text"
+                          class="form-control"
+                          placeholder="الشارع"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="card shadow-sm h-100">
+            <div class="card-header card-header-custom">بيانات الكفيل</div>
+            <div class="card-body">
+              <form>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">اسم الكفيل</label>
+                    <input
+                      name="guarantor_name"
+                      type="text"
+                      class="form-control"
+                      value="خالد محمود"
+                    />
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">الوظيفة</label>
+                    <input
+                      name="guarantor_work"
+                      type="text"
+                      class="form-control"
+                      value="مدرس"
+                    />
+                  </div>
+                  <div class="col-md-12">
+                    <label class="form-label">عنوان الكفيل</label>
+                    <div class="row g-2">
+                      <div class="col-md-4">
+                        <input
+                          name="guarantor_address1"
+                          id="guarantor_address1"
+                          type="text"
+                          class="form-control"
+                          placeholder="القرية/الضاحية"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <input
+                          name="guarantor_address2"
+                          id="guarantor_address2"
+                          type="text"
+                          class="form-control"
+                          placeholder="الحي"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <input
+                          name="guarantor_address3"
+                          id="guarantor_address3"
+                          type="text"
+                          class="form-control"
+                          placeholder="الشارع"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label">رقم الموبايل </label>
+                    <div id="guarantorMobileNumbersGroup">
+                      <div class="input-group mb-2">
+                        <input
+                          name="guarantor_phone[]"
+                          type="tel"
+                          class="form-control"
+                          placeholder="رقم الموبايل"
+                        />
+                        <button
+                          type="button"
+                          class="btn btn-outline-success"
+                          onclick="addGuarantorMobileField(this)"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <div class="card shadow-sm h-100">
+            <div class="card-header card-header-custom">تفاصيل الاشتراك</div>
+            <div class="card-body">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label required">مدة الاشتراك</label>
+                  <select
+                    name="subscription_duration"
+                    id="subscription_duration"
+                    class="form-select"
+                    disabled
+                  >
+                    <option value="yearly">سنوي</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">نوع الاشتراك</label>
+                  <select
+                    name="subscription_type"
+                    id="subscription_type_select"
+                    class="form-select"
+                    disabled
+                  >
+                    <option value="public_library">مكتبة عامة</option>
+                    <option value="children_library">مكتبة أطفال</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">تصنيف المشترك</label>
+                  <select
+                    name="category"
+                    id="category"
+                    class="form-select"
+                    disabled
+                  >
+                    <option value="regular" selected>شخص</option>
+                    <option value="student">طالب</option>
+                    <option value="municipality_employee">موظف بلدية</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">تاريخ بداية الاشتراك</label>
+                  <input
+                    name="subscription_start_date"
+                    id="subscription_start_date"
+                    type="date"
+                    class="form-control"
+                    value=""
+                    readonly
+                  />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">تاريخ نهاية الاشتراك</label>
+                  <input
+                    name="subscription_end_date"
+                    id="subscription_end_date"
+                    type="date"
+                    class="form-control"
+                    value=""
+                    readonly
+                  />
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">الرسوم (شيكل)</label>
+                  <input
+                    name="subscription_fee"
+                    id="subscription_fee"
+                    type="number"
+                    class="form-control"
+                    step="0.01"
+                    value="35.00"
+                    readonly
+                  />
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">طريقة الدفع</label>
+                  <select
+                    name="payment_method"
+                    id="payment_method"
+                    class="form-select"
+                    disabled
+                  >
+                    <option value="cash">نقداً</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">رقم الوصل</label>
+                  <input
+                    name="receipt_number"
+                    id="receipt_number"
+                    type="text"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">رقم الدفتر</label>
+                  <input
+                    name="book_number"
+                    id="book_number"
+                    type="text"
+                    class="form-control"
+                    readonly
+                  />
+                </div>
+
+                <div class="col-12">
+                  <label class="form-label">ملاحظات حول الاشتراك</label>
+                  <textarea
+                    name="subscription_notes"
+                    class="form-control"
+                    rows="2"
+                    placeholder="أدخل أي ملاحظات إضافية هنا..."
+                    readonly
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 mt-3">
+        حفظ التعديلات
+      </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // إعداد تواريخ الاشتراك تلقائياً
+      const today = new Date().toISOString().split("T")[0];
+      const endDate = new Date();
+      endDate.setFullYear(endDate.getFullYear() + 1);
+      const formattedEndDate = endDate.toISOString().split("T")[0];
+
+      document.getElementById("subscription_start_date").value = today;
+      document.getElementById("subscription_start_date").readOnly = true;
+
+      document.getElementById("subscription_end_date").value = formattedEndDate;
+      document.getElementById("subscription_end_date").readOnly = true;
+
+      // إضافة/حذف أرقام الموبايل للمشترك
+      function addMobileField(btn) {
+        const group = document.getElementById("mobileNumbersGroup");
+        const newField = document.createElement("div");
+        newField.className = "input-group mb-2";
+        newField.innerHTML = `
+          <input name="phone_mobile[]" type="tel" class="form-control" placeholder="رقم الموبايل" />
+          <button type="button" class="btn btn-outline-danger" onclick="removeMobileField(this)">-</button>
+        `;
+        group.appendChild(newField);
+      }
+      function removeMobileField(btn) {
+        btn.parentElement.remove();
+      }
+
+      // إضافة/حذف أرقام الموبايل للكفيل
+      function addGuarantorMobileField(btn) {
+        const group = document.getElementById("guarantorMobileNumbersGroup");
+        const newField = document.createElement("div");
+        newField.className = "input-group mb-2";
+        newField.innerHTML = `
+          <input name="guarantor_phone[]" type="tel" class="form-control" placeholder="رقم الموبايل" />
+          <button type="button" class="btn btn-outline-danger" onclick="removeGuarantorMobileField(this)">-</button>
+        `;
+        group.appendChild(newField);
+      }
+      function removeGuarantorMobileField(btn) {
+        btn.parentElement.remove();
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>إدارة الإعارات - مكتبة بلدية طولكرم</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* لتصحيح اتجاه بعض العناصر في RTL إن لزم الأمر */
+      .input-group
+        > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+        border-top-left-radius: 0.375rem;
+        border-bottom-left-radius: 0.375rem;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+      .input-group
+        > :not(:first-child):not(.dropdown-toggle):not(.dropdown-menu) {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-top-right-radius: 0.375rem;
+        border-bottom-right-radius: 0.375rem;
+        margin-right: -1px;
+      }
+      .input-group > .form-control {
+        border-radius: 0.375rem;
+      }
+      .btn-outline-danger {
+        /* لضمان تنسيق زر الإزالة في الـ input-group */
+        border-top-right-radius: 0.375rem;
+        border-bottom-right-radius: 0.375rem;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    </style>
+  </head>
+
+  <body class="bg-light">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark py-3 px-4 rounded-3 shadow-lg"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="image/img.png"
+            alt="Logo"
+            class="rounded-circle me-2"
+            width="64"
+            height="64"
+          />
+          برنامح الإعارة
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavDropdown"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">🏠 الرئيسية</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="new-sub.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📝 الاشتراكات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="new-sub.html">اشتراك جديد</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="update-sub.html"
+                    >تعديل الاشتراك</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="renew-sub.html"
+                    >تجديد اشتراك</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="loan.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📚 الإعارات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="loan.html">إعارة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="return-loan.html">إرجاع</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="late-loan.html">إرجاع متأخر</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="reports.html"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                📈 التقارير
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="reports.html">تقارير عامة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="personal-report.html"
+                    >تقرير شخصي</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="request.html"
+                >الطلبات الاونلاين</a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="alert2.html">التنبيهات</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <h4 class="mb-4 text-primary fw-bold">إدارة الطلبات</h4>
+
+      <div class="mb-3">
+        <button
+          class="btn btn-primary me-2"
+          onclick="toggleSection('loanCollapse')"
+        >
+          📚 طلبات الإعارة
+        </button>
+        <button
+          class="btn btn-primary"
+          onclick="toggleSection('inactiveCollapse')"
+        >
+          🚫 المشتركين غير المفعلين
+        </button>
+      </div>
+
+      <div id="loanCollapse" class="mt-3">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">طلبات الإعارة</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table
+                class="table table-bordered table-hover text-center align-middle"
+              >
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>رقم التصنيف</th>
+                    <th>اسم المشترك</th>
+                    <th>اسم الكتاب</th>
+                    <th>تاريخ الطلب</th>
+                    <th>الطول</th>
+                    <th>الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>12455</td>
+                    <td>أحمد محمود</td>
+                    <td>مقدمة في علم الحاسوب</td>
+                    <td>2025-09-15</td>
+                    <td>17</td>
+                    <td>
+                      <button
+                        class="btn btn-success btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmLoanModal"
+                        data-loan-id="1"
+                        data-member-name="أحمد محمود"
+                        data-book-name="مقدمة في علم الحاسوب"
+                      >
+                        إعارة
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm ms-1"
+                        onclick="confirmCancel(event, 'loan', 1)"
+                      >
+                        إلغاء
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>74738</td>
+                    <td>ليلى خالد</td>
+                    <td>رواية كرة الثلج</td>
+                    <td>2025-09-14</td>
+                    <td>15</td>
+                    <td>
+                      <button
+                        class="btn btn-success btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmLoanModal"
+                        data-loan-id="2"
+                        data-member-name="ليلى خالد"
+                        data-book-name="رواية كرة الثلج"
+                      >
+                        إعارة
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm ms-1"
+                        onclick="confirmCancel(event, 'loan', 2)"
+                      >
+                        إلغاء
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="inactiveCollapse" class="mt-3" style="display: none">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">
+            المشتركين غير المفعلين
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table
+                class="table table-bordered table-hover text-center align-middle"
+              >
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>اسم المشترك</th>
+                    <th>رقم الهاتف</th>
+                    <th>العنوان</th>
+                    <th>الوظيفة</th>
+                    <th>الإجراء</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>محمد احمد</td>
+                    <td>0599899068</td>
+                    <td>عزون</td>
+                    <td>مهندس معماري</td>
+                    <td>
+                      <button
+                        class="btn btn-success btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#receiptModal"
+                        data-name="محمد احمد"
+                        data-phone="0599899068"
+                      >
+                        تفعيل
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm ms-1"
+                        onclick="confirmCancel(event, 'member', 1)"
+                      >
+                        إلغاء
+                      </button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>زينة عطا</td>
+                    <td>0594567873</td>
+                    <td>عتيل</td>
+                    <td>معلمة</td>
+                    <td>
+                      <button
+                        class="btn btn-success btn-sm"
+                        data-bs-toggle="modal"
+                        data-bs-target="#receiptModal"
+                        data-name="زينة عطا"
+                        data-phone="0594567873"
+                      >
+                        تفعيل
+                      </button>
+                      <button
+                        class="btn btn-danger btn-sm ms-1"
+                        onclick="confirmCancel(event, 'member', 2)"
+                      >
+                        إلغاء
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="confirmLoanModal"
+      tabindex="-1"
+      aria-labelledby="confirmLoanModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-success text-white">
+            <h5 class="modal-title" id="confirmLoanModalLabel">
+              تأكيد الإعارة
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="إغلاق"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="confirmLoanMessage">
+              هل أنت متأكد من إعارة هذا الطلب؟ سيتم تسجيل الإعارة ولا يمكن
+              التراجع عن هذا الإجراء.
+            </p>
+            <p class="mt-3 text-muted">
+              **تفاصيل الطلب:**
+              <br />
+              <span id="loanMemberName" class="fw-bold"></span>
+              للكتاب
+              <span id="loanBookName" class="fw-bold"></span>
+              (الطلب رقم
+              <span id="loanId" class="fw-bold"></span>).
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              رجوع
+            </button>
+            <button
+              type="button"
+              class="btn btn-success"
+              id="confirmLoanButton"
+              onclick="executeLoanConfirm()"
+            >
+              تأكيد الإعارة
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="cancelConfirmModal"
+      tabindex="-1"
+      aria-labelledby="cancelConfirmModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="cancelConfirmModalLabel">
+              تأكيد الإلغاء
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="إغلاق"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p id="cancelMessage">
+              هل أنت متأكد من إلغاء هذا الطلب/المشترك؟ لا يمكن التراجع عن هذا
+              الإجراء.
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              رجوع
+            </button>
+            <button
+              type="button"
+              class="btn btn-danger"
+              id="confirmCancelButton"
+              onclick="executeCancel()"
+            >
+              تأكيد الإلغاء
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="receiptModal"
+      tabindex="-1"
+      aria-hidden="true"
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <div class="w-100">
+              <h5 class="modal-title">تفعيل مشترك</h5>
+              <div
+                class="d-flex flex-row justify-content-between align-items-center mt-2"
+              ></div>
+            </div>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body" id="receiptContent">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link active"
+                  id="A1-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#A1-tab-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="A1-tab-pane"
+                  aria-selected="true"
+                >
+                  بيانات المشترك
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="A2-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#A2-tab-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="A2-tab-pane"
+                  aria-selected="false"
+                >
+                  بيانات الكفيل
+                </button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button
+                  class="nav-link"
+                  id="A3-tab"
+                  data-bs-toggle="tab"
+                  data-bs-target="#A3-tab-pane"
+                  type="button"
+                  role="tab"
+                  aria-controls="A3-tab-pane"
+                  aria-selected="false"
+                >
+                  تفاصيل الاشتراك
+                </button>
+              </li>
+            </ul>
+
+            <div class="tab-content p-3 bg-white shadow-sm" id="myTabContent">
+              <div
+                class="tab-pane fade show active"
+                id="A1-tab-pane"
+                role="tabpanel"
+                aria-labelledby="A1-tab"
+              >
+                <div class="container">
+                  <div class="row g-3">
+                    <div class="col-md-3">
+                      <label class="form-label">رقم المشترك</label>
+                      <input
+                        id="subscriber_id"
+                        name="subscriber_id"
+                        type="text"
+                        class="form-control"
+                        value="SUB-0001"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label required">اسم المشترك</label>
+                      <input
+                        id="full_name"
+                        name="full_name"
+                        type="text"
+                        class="form-control"
+                        placeholder="الاسم الكامل"
+                        value="محمد احمد"
+                        readonly
+                      />
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">تاريخ الميلاد</label>
+                      <input
+                        name="birth_date"
+                        id="birth_date"
+                        type="date"
+                        class="form-control"
+                        value="1990-01-01"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">الجنس</label>
+                      <select name="gender" id="gender" class="form-select">
+                        <option value="male" selected>ذكر</option>
+                        <option value="female">أنثى</option>
+                      </select>
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">رقم الهوية</label>
+                      <input
+                        name="id_number"
+                        id="id_number"
+                        type="text"
+                        class="form-control"
+                        value="987654321"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-md-4">
+                      <label class="form-label">المحافظة</label>
+                      <select name="province" id="province" class="form-select">
+                        <option value="أريحا والأغوار">أريحا والأغوار</option>
+                        <option value="بيت لحم">بيت لحم</option>
+                        <option value="الخليل">الخليل</option>
+                        <option value="القدس">القدس</option>
+                        <option value="دير البلح">دير البلح</option>
+                        <option value="رفح">رفح</option>
+                        <option value="سلفيت">سلفيت</option>
+                        <option value="شمال غزة">شمال غزة</option>
+                        <option value="طوباس">طوباس</option>
+                        <option value="طولكرم" selected>طولكرم</option>
+                        <option value="غزة">غزة</option>
+                        <option value="قلقيلية">قلقيلية</option>
+                        <option value="خان يونس">خان يونس</option>
+                        <option value="نابلس">نابلس</option>
+                        <option value="رام الله والبيرة">
+                          رام الله والبيرة
+                        </option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-4">
+                      <label class="form-label">الوظيفة</label>
+                      <input
+                        name="work"
+                        id="work"
+                        type="text"
+                        class="form-control"
+                        value="مهندس معماري"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-md-12">
+                      <label class="form-label">العنوان</label>
+                      <div class="row g-2">
+                        <div class="col-md-4">
+                          <input
+                            name="address1"
+                            id="address1"
+                            type="text"
+                            class="form-control"
+                            placeholder="القرية/الضاحية"
+                            value="عزون"
+                            readonly
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <input
+                            name="address2"
+                            id="address2"
+                            type="text"
+                            class="form-control"
+                            placeholder="الحي"
+                            value="حي النور"
+                            readonly
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <input
+                            name="address3"
+                            id="address3"
+                            type="text"
+                            class="form-control"
+                            placeholder="الشارع"
+                            value="شارع المئذنة"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="form-label">أرقام الموبايل</label>
+                      <div id="mobileNumbersGroup">
+                        <div class="input-group mb-2 phone-group">
+                          <input
+                            name="phone_mobile[]"
+                            type="tel"
+                            class="form-control"
+                            placeholder="رقم الموبايل"
+                            value="0599899068"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="tab-pane fade"
+                id="A2-tab-pane"
+                role="tabpanel"
+                aria-labelledby="A2-tab"
+              >
+                <div class="container">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label class="form-label">اسم الكفيل</label>
+                      <input
+                        name="guarantor_name"
+                        type="text"
+                        class="form-control"
+                        value="خالد محمود"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-md-6">
+                      <label class="form-label">الوظيفة</label>
+                      <input
+                        name="guarantor_work"
+                        type="text"
+                        class="form-control"
+                        value="مدرس"
+                        readonly
+                      />
+                    </div>
+                    <div class="col-md-12">
+                      <label class="form-label">عنوان الكفيل</label>
+                      <div class="row g-2">
+                        <div class="col-md-4">
+                          <input
+                            name="guarantor_address1"
+                            id="guarantor_address1"
+                            type="text"
+                            class="form-control"
+                            placeholder="القرية/الضاحية"
+                            value="طولكرم"
+                            readonly
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <input
+                            name="guarantor_address2"
+                            id="guarantor_address2"
+                            type="text"
+                            class="form-control"
+                            placeholder="الحي"
+                            value="البلدة القديمة"
+                            readonly
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <input
+                            name="guarantor_address3"
+                            id="guarantor_address3"
+                            type="text"
+                            class="form-control"
+                            placeholder="الشارع"
+                            value="شارع فرعي"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <label class="form-label">أرقام الموبايل للكفيل</label>
+                      <div id="guarantorMobileNumbersGroup">
+                        <div class="input-group mb-2 phone-group">
+                          <input
+                            name="guarantor_phone[]"
+                            type="tel"
+                            class="form-control"
+                            placeholder="رقم الموبايل"
+                            value="0599123456"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="tab-pane fade"
+                id="A3-tab-pane"
+                role="tabpanel"
+                aria-labelledby="A3-tab"
+              >
+                <form action="" method="">
+                  <div class="container">
+                    <div class="row g-3">
+                      <div class="col-md-4">
+                        <label class="form-label required">مدة الاشتراك</label>
+                        <select
+                          name="subscription_duration"
+                          id="subscription_duration"
+                          class="form-select"
+                        >
+                          <option value="yearly">سنوي</option>
+                          <option value="monthly" selected>شهري</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">تاريخ بداية الاشتراك</label>
+                        <input
+                          name="subscription_start_date"
+                          id="subscription_start_date"
+                          type="date"
+                          class="form-control"
+                          value="2025-10-01"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">تاريخ نهاية الاشتراك</label>
+                        <input
+                          name="subscription_end_date"
+                          id="subscription_end_date"
+                          type="date"
+                          class="form-control"
+                          value="2026-10-01"
+                          readonly
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">الرسوم (شيكل)</label>
+                        <input
+                          name="subscription_fee"
+                          id="subscription_fee"
+                          type="number"
+                          class="form-control"
+                          step="0.01"
+                          value="35.00"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">طريقة الدفع</label>
+                        <select
+                          name="payment_method"
+                          id="payment_method"
+                          class="form-select"
+                        >
+                          <option value="cash" selected>نقداً</option>
+                        </select>
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">رقم الوصل</label>
+                        <input
+                          name="receipt_number"
+                          id="receipt_number"
+                          type="text"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">رقم الدفتر</label>
+                        <input
+                          name="book_number"
+                          id="book_number"
+                          type="text"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="col-md-4">
+                        <label class="form-label">نوع الاشتراك</label>
+                        <select
+                          name="subscription_type"
+                          id="subscription_type"
+                          class="form-select"
+                        >
+                          <option value="public_library">مكتبة عامة</option>
+                          <option value="children_library">مكتبة أطفال</option>
+                        </select>
+                      </div>
+
+                      <div class="col-md-3">
+                        <label class="form-label">تصنيف المشترك</label>
+                        <select
+                          name="category"
+                          id="category"
+                          class="form-select"
+                        >
+                          <option value="student">طالب</option>
+                          <option value="regular" selected>شخص</option>
+                          <option value="municipality_employee">
+                            موظف بلدية
+                          </option>
+                        </select>
+                      </div>
+                      <div class="col-12">
+                        <label class="form-label">ملاحظات حول الاشتراك</label>
+                        <textarea
+                          name="subscription_notes"
+                          class="form-control"
+                          rows="2"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              إغلاق
+            </button>
+
+            <button
+              type="button"
+              class="btn btn-success"
+              onclick="printReceipt()"
+            >
+              طباعة وتفعيل
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // متغير لتخزين ID طلب الإعارة الحالي المراد تأكيده
+      let currentLoanId = null;
+
+      // دالة التبديل بين الأقسام
+      function toggleSection(id) {
+        const loan = document.getElementById("loanCollapse");
+        const inactive = document.getElementById("inactiveCollapse");
+
+        if (id === "loanCollapse") {
+          loan.style.display = "block";
+          inactive.style.display = "none";
+        } else if (id === "inactiveCollapse") {
+          loan.style.display = "none";
+          inactive.style.display = "block";
+        }
+      }
+
+      // ----------------------------------------------------------------
+      // معالجة Modal تفعيل الإعارة (تمت إضافتها)
+      // ----------------------------------------------------------------
+
+      const confirmLoanModalEl = document.getElementById("confirmLoanModal");
+      if (confirmLoanModalEl) {
+        confirmLoanModalEl.addEventListener("show.bs.modal", (event) => {
+          const button = event.relatedTarget;
+          const loanId = button.getAttribute("data-loan-id");
+          const memberName = button.getAttribute("data-member-name");
+          const bookName = button.getAttribute("data-book-name");
+
+          currentLoanId = loanId; // تخزين ID الطلب
+
+          // تحديث تفاصيل الطلب في Modal
+          document.getElementById("loanId").textContent = loanId;
+          document.getElementById("loanMemberName").textContent = memberName;
+          document.getElementById("loanBookName").textContent = bookName;
+
+          // تحديث رسالة التأكيد لتبدو أكثر تخصيصًا
+          document.getElementById("confirmLoanMessage").textContent =
+            "هل أنت متأكد من إعارة هذا الطلب؟ سيتم تسجيل الإعارة ولا يمكن التراجع عن هذا الإجراء.";
+        });
+      }
+
+      // دالة تنفيذ الإعارة
+      function executeLoanConfirm() {
+        const id = currentLoanId;
+
+        if (id) {
+          // *ملاحظة*: هنا يتم وضع كود معالجة الإعارة (مثلاً: استدعاء API لتسجيل الإعارة)
+          console.log(`Executing loan confirmation for ID: ${id}`);
+
+          // إغلاق modal التأكيد
+          const modalEl = document.getElementById("confirmLoanModal");
+          const modal = bootstrap.Modal.getInstance(modalEl);
+          modal.hide();
+
+          // رسالة نجاح
+          alert(`تمت إعارة الطلب رقم ${id} بنجاح!`);
+
+          // تحديث الواجهة (مثلاً: إزالة الصف من الجدول) - مثال افتراضي:
+          // window.location.reload();
+        }
+      }
+
+      // ----------------------------------------------------------------
+      // معالجة Modal تفعيل المشترك (موجود مسبقاً)
+      // ----------------------------------------------------------------
+
+      const receiptModal = document.getElementById("receiptModal");
+      if (receiptModal) {
+        receiptModal.addEventListener("show.bs.modal", (event) => {
+          const button = event.relatedTarget;
+          const memberName = button.getAttribute("data-name");
+          const memberPhone = button.getAttribute("data-phone");
+
+          const modalTitleName = receiptModal.querySelector("#memberName");
+          const modalTitlePhone = receiptModal.querySelector("#memberPhone");
+
+          // التحقق من وجود العناصر قبل التحديث
+          if (modalTitleName && modalTitlePhone) {
+            modalTitleName.textContent = memberName;
+            modalTitlePhone.textContent = memberPhone;
+          }
+
+          // *ملاحظة*: في تطبيق حقيقي، سيتم جلب بقية البيانات (العنوان، الكفيل، تفاصيل الاشتراك)
+          // عبر استدعاء AJAX بناءً على معرف المشترك/رقم الهاتف وتعبئتها في الحقول هنا.
+        });
+      }
+
+      // ----------------------------------------------------------------
+      // معالجة Modal تأكيد الإلغاء (موجود مسبقاً)
+      // ----------------------------------------------------------------
+
+      let currentCancelType = null;
+      let currentCancelId = null;
+
+      function confirmCancel(event, type, id) {
+        event.preventDefault(); // منع الإجراء الافتراضي للزر
+
+        currentCancelType = type;
+        currentCancelId = id;
+
+        const messageElement = document.getElementById("cancelMessage");
+        let message = "";
+
+        if (type === "loan") {
+          message = `هل أنت متأكد من إلغاء طلب الإعارة رقم ${id}؟ لا يمكن التراجع عن هذا الإجراء.`;
+        } else if (type === "member") {
+          message = `هل أنت متأكد من إلغاء تفعيل المشترك رقم ${id}؟ هذا سيؤدي إلى حذفه من قائمة الانتظار.`;
+        }
+
+        messageElement.textContent = message;
+
+        const cancelModal = new bootstrap.Modal(
+          document.getElementById("cancelConfirmModal")
+        );
+        cancelModal.show();
+      }
+
+      // دالة لتنفيذ الإلغاء
+      function executeCancel() {
+        const type = currentCancelType;
+        const id = currentCancelId;
+
+        // *ملاحظة*: هنا يتم وضع كود معالجة الإلغاء
+        console.log(`Executing cancel for ${type} with ID: ${id}`);
+
+        // إغلاق modal التأكيد
+        const cancelModalEl = document.getElementById("cancelConfirmModal");
+        const cancelModal = bootstrap.Modal.getInstance(cancelModalEl);
+        cancelModal.hide();
+
+        // رسالة نجاح
+        alert(
+          `تم إلغاء ${
+            type === "loan" ? "طلب الإعارة" : "المشترك"
+          } رقم ${id} بنجاح!`
+        );
+
+        // تحديث الواجهة (مثال افتراضي)
+        // window.location.reload();
+      }
+
+      // ----------------------------------------------------------------
+      // دوال التفعيل والطباعة
+      // ----------------------------------------------------------------
+
+      // دالة الطباعة والتفعيل الافتراضية
+      function printReceipt() {
+        alert("سيتم طباعة الوصل وحفظ البيانات وتفعيل المشترك.");
+        const modalEl = document.getElementById("receiptModal");
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+      }
+      const category = document.getElementById("category");
+      const feeInput = document.getElementById("subscription_fee");
+
+      function updateSubscriptionFee() {
+        const selectedCategory = category.value;
+        let fee = 35.0;
+
+        if (selectedCategory === "municipality_employee") {
+          fee = 0.0;
+        } else if (selectedCategory === "student") {
+          fee = 25.0;
+        } else if (selectedCategory === "regular") {
+          fee = 35.0;
+        }
+
+        feeInput.value = fee.toFixed(2);
+      }
+
+      category.addEventListener("change", updateSubscriptionFee);
+
+      // ملاحظة: تم حذف الدوال غير المستخدمة (addMobileField, removeMobileField, saveActivation)
+    </script>
+  </body>
+</html>

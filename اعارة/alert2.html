@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>تنبيه الموظف</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-light">
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark py-3 px-4 rounded-3 shadow-lg"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+          <img
+            src="image/img.png"
+            alt="Logo"
+            class="rounded-circle me-2"
+            width="64"
+            height="64"
+          />
+          برنامح الإعارة
+        </a>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavDropdown"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">🏠 الرئيسية</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="new-sub.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📝 الاشتراكات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="new-sub.html">اشتراك جديد</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="update-sub.html"
+                    >تعديل الاشتراك</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="renew-sub.html"
+                    >تجديد اشتراك</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="loan.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📚 الإعارات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="loan.html">إعارة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="return-loan.html"
+                    >إرجاع</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="late-loan.html"
+                    >إرجاع متأخر</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="reports.html"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                📈 التقارير
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="reports.html">تقارير عامة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="personal-report.html"
+                    >تقرير شخصي</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="request.html">الطلبات الاونلاين</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="alert2.html">التنبيهات</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-5">
+      <div class="card shadow">
+        <div class="card-header bg-danger text-white text-center">
+          <h4>🔔 تنبيه الموظف</h4>
+        </div>
+        <div class="card-body">
+          <table
+            class="table table-striped table-bordered text-center align-middle"
+          >
+            <thead class="table-dark">
+              <tr>
+                <th>رقم المشترك</th>
+                <th>اسم المشترك</th>
+                <th>رقم الكتاب</th>
+                <th>عنوان الكتاب</th>
+                <th>تاريخ انتهاء الإعارة</th>
+                <th>رقم الهاتف</th>
+                <th>الأيام المتبقية</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>أحمد محمود</td>
+                <td>B-567</td>
+                <td>مقدمة في علم الحاسوب</td>
+                <td>2025-09-30</td>
+                <td>0123456789</td>
+                <td>5 أيام</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>ليلى خالد</td>
+                <td>B-890</td>
+                <td>رواية كرة الثلج</td>
+                <td>2025-09-25</td>
+                <td>0987654321</td>
+                <td>0 يوم</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

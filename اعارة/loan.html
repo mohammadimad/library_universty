@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>إعارة الكتب</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f5f6fa;
+      }
+      .dropdown-menu.show {
+        text-align: right;
+      }
+      .form-section {
+        background: #fff;
+        border-radius: 1rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+        padding: 2rem 1.5rem;
+        margin-bottom: 2rem;
+      }
+      .form-label {
+        font-weight: 600;
+      }
+      .table thead th {
+        background: #e9ecef;
+      }
+      .btn-success {
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark py-3 px-4 rounded-3 shadow-lg"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+          <img
+            src="image/img.png"
+            alt="Logo"
+            class="rounded-circle me-2"
+            width="48"
+            height="48"
+          />
+          <span class="fw-bold fs-5">برنامح الإعارة</span>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div
+          class="collapse navbar-collapse justify-content-center"
+          id="navbarNavDropdown"
+        >
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="index.html">🏠 الرئيسية</a>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="new-sub.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📝 الاشتراكات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="new-sub.html">اشتراك جديد</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="update-sub.html"
+                    >تعديل الاشتراك</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="renew-sub.html"
+                    >تجديد اشتراك</a
+                  >
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle active"
+                href="loan.html"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                📚 الإعارات
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="loan.html">إعارة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="return-loan.html"
+                    >إرجاع</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="late-loan.html">إرجاع متأخر</a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="reports.html"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                📈 التقارير
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="reports.html">تقارير عامة</a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="personal-report.html"
+                    >تقرير شخصي</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="request.html">الطلبات الاونلاين</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="alert2.html">التنبيهات</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <div class="form-section shadow">
+        <div class="mb-4 text-center">
+          <h5 class="fw-bold text-primary mb-1">نظام إعارة الكتب</h5>
+          <p class="text-muted small mb-0">
+            مدة الإعارة الافتراضية للكتب هي 14 يوماً.
+          </p>
+        </div>
+        <form>
+          <div class="row mb-3">
+            <div class="col-md-3">
+              <label class="form-label">رقم المشترك</label>
+              <input type="text" class="form-control" />
+            </div>
+            <!-- ****************************************************************************************** -->
+            <div class="col-md-5">
+              <label class="form-label">اسم المشترك</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subscriberName"
+                list="subscriberList"
+                placeholder="ابحث باسم المشترك..."
+                autocomplete="off"
+                oninput="searchSubscriber(this.value)"
+              />
+              <datalist id="subscriberList">
+                <!-- سيتم تعبئة الخيارات ديناميكياً -->
+                <option value="أحمد محمود"></option>
+                <option value="ليلى خالد"></option>
+                <option value="سارة أحمد"></option>
+              </datalist>
+            </div>
+          </div>
+          <!-- ****************************************************************************************** -->
+
+          <div class="row mb-3">
+            <div class="col-md-2">
+              <label class="form-label">الباركود</label>
+              <input type="text" class="form-control" />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">اسم الكتاب</label>
+              <input type="text" class="form-control" />
+            </div>
+          </div>
+
+          <h6 class="mt-4 mb-2 fw-bold text-secondary">الكتب المستعارة</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle">
+              <thead class="table-secondary">
+                <tr>
+                  <th>رقم المشترك</th>
+                  <th>عنوان الكتاب</th>
+                  <th>الباركود</th>
+                  <th>من تاريخ</th>
+                  <th>إلى تاريخ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>25902</td>
+                  <td>برمجة تطبيقات ويب php5/mysql</td>
+                  <td>000025920001</td>
+                  <td>08/09/2025</td>
+                  <td>22/09/2025</td>
+                </tr>
+                <tr>
+                  <td>25920</td>
+                  <td>برمجة مواقع ويب باستخدام Asp.Net</td>
+                  <td>000025920004</td>
+                  <td>08/09/2025</td>
+                  <td>22/09/2025</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="w-100 mt-4">
+            <button
+              type="button"
+              class="btn btn-success w-100"
+              data-bs-toggle="modal"
+              data-bs-target="#confirmLoanModal"
+            >
+              إعارة
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="confirmLoanModal"
+      tabindex="-1"
+      aria-labelledby="confirmLoanModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title" id="confirmLoanModalLabel">
+              تأكيد الإعارة
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>هل أنت متأكد من إعارة هذا الكتاب؟</p>
+            <table class="table table-bordered text-center">
+              <thead class="table-secondary">
+                <tr>
+                  <th>الباركود</th>
+                  <th>رقم التسجيل</th>
+                  <th>اسم الكتاب</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>000025920001</td>
+                  <td>25902</td>
+                  <td>برمجة تطبيقات ويب php5/mysql</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer d-flex justify-content-between">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              إلغاء
+            </button>
+            <button type="button" class="btn btn-success">تأكيد</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script></script>
+  </body>
+</html>

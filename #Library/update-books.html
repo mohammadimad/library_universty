@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المكتبة - عرض وتحديث الكتب</title>
+    <meta name="description" content="عرض وتحديث بيانات الكتب في نظام المكتبة">
+    
+    <!-- Bootstrap RTL CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Arabic Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Background & Surface Colors */
+            --background: hsl(218, 100%, 97%);
+            --foreground: hsl(215, 25%, 15%);
+            --surface: hsl(0, 0%, 100%);
+            --surface-alt: hsl(220, 15%, 96%);
+
+            /* Brand Colors */
+            --primary: hsl(215, 90%, 52%);
+            --primary-foreground: hsl(0, 0%, 100%);
+            --primary-light: hsl(215, 85%, 65%);
+            --primary-dark: hsl(215, 95%, 42%);
+
+            /* Secondary Brand */
+            --secondary: hsl(195, 85%, 48%);
+            --secondary-foreground: hsl(0, 0%, 100%);
+            --secondary-light: hsl(195, 80%, 65%);
+
+            /* Accent Colors */
+            --accent: hsl(275, 75%, 55%);
+            --success: hsl(142, 76%, 45%);
+            --warning: hsl(38, 92%, 55%);
+            --destructive: hsl(0, 84%, 60%);
+
+            /* Neutral Colors */
+            --muted: hsl(220, 15%, 94%);
+            --muted-foreground: hsl(215, 16%, 47%);
+            --border: hsl(220, 13%, 88%);
+
+            /* Shadows */
+            --shadow-soft: 0 2px 8px -2px hsl(215, 25%, 15%, 0.08);
+            --shadow-medium: 0 4px 16px -4px hsl(215, 25%, 15%, 0.12);
+            --shadow-large: 0 8px 32px -8px hsl(215, 25%, 15%, 0.16);
+            --shadow-glow: 0 0 32px hsl(215, 90%, 52%, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+
+        /* Custom utility classes */
+        .gradient-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .gradient-secondary {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+        }
+        
+        .gradient-success {
+            background: linear-gradient(135deg, var(--success), hsl(155, 70%, 55%));
+        }
+        
+        .gradient-surface {
+            background: linear-gradient(180deg, var(--surface), var(--surface-alt));
+        }
+        
+        .shadow-soft { box-shadow: var(--shadow-soft); }
+        .shadow-medium { box-shadow: var(--shadow-medium); }
+        .shadow-large { box-shadow: var(--shadow-large); }
+        .shadow-glow { box-shadow: var(--shadow-glow); }
+        
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Navigation */
+        .navbar {
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-large);
+        }
+
+        .navbar-brand img {
+            border-radius: 50%;
+        }
+
+        /* Container */
+        .container {
+            padding-top: 100px;
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition-smooth);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Table Styling */
+        .table {
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: var(--muted);
+            transition: var(--transition-smooth);
+        }
+
+        /* Modal Styling */
+        .modal-content {
+            border-radius: 1rem;
+            box-shadow: var(--shadow-large);
+        }
+
+        .modal-header {
+            border-bottom: 1px solid var(--border);
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        .modal-footer {
+            border-top: 1px solid var(--border);
+            border-radius: 0 0 1rem 1rem;
+        }
+
+        /* Tabs */
+        .nav-tabs .nav-link {
+            border: none;
+            color: var(--muted-foreground);
+            font-weight: 500;
+        }
+
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white !important;
+            border-radius: 0.75rem 0.75rem 0 0;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: var(--primary);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), hsl(155, 70%, 55%));
+            border: none;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), hsl(38, 85%, 65%));
+            border: none;
+            color: #000;
+        }
+
+        .btn-warning:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--secondary), hsl(195, 80%, 60%));
+            border: none;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container { padding-top: 120px; }
+            .navbar { position: relative; top: 0; margin: 10px; }
+            .table-responsive { font-size: 0.875rem; }
+        }
+
+        /* Print styles (for consistency) */
+        @media print {
+            body * { visibility: hidden; }
+            #booksTable, #booksTable * { visibility: visible; }
+            #booksTable { position: absolute; top: 0; left: 0; width: 100%; padding: 20px; }
+            .no-print { display: none !important; }
+            .navbar { display: none !important; }
+            .modal { display: none !important; }
+        }
+    </style>
+</head>
+
+<body>
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-dark py-3 px-4 rounded-3 shadow-lg"
+  >
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img
+          src="./slogan.png"
+          alt="Logo"
+          class="rounded-circle me-2"
+          width="64px"
+          height="64px"
+        />
+        إدارة الكتب
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        class="collapse navbar-collapse justify-content-center"
+        id="navbarNavDropdown"
+      >
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="add-book.html">📚 إضافة كتاب جديد</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="update-books.html">📖 عرض وتحديث الكتب</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="advanced-search.html">🔍 بحث عن كتاب</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="reports.html"
+              >📈 التقارير</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="delete-books.html"
+              >🗑️ حذف كتاب</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container mt-4">
+
+        <!-- Page Header -->
+        <div class="mb-5">
+            <h1 class="display-5 fw-bold text-primary mb-2 d-flex align-items-center gap-3">
+                📖 عرض وتحديث الكتب
+            </h1>
+            <p class="text-muted fs-5">إدارة بيانات الكتب وتحديثها بسهولة</p>
+        </div>
+                <!-- زر البحث -->
+
+
+ <!-- خانة البحث عن كتاب -->
+      <div class="mb-3 d-flex gap-2 align-items-center">
+        <select
+          id="searchType"
+          class="form-select w-auto"
+          style="min-width: 160px"
+        >
+          <option value="title">العنوان</option>
+          <option value="author">المؤلف</option>
+          <option value="classification">رمز التصنيف</option>
+          <option value="publisher">الناشر</option>
+          <option value="year">سنة النشر</option>
+        </select>
+        <input
+          type="text"
+          id="searchInput"
+          class="form-control"
+          placeholder="🔍 اكتب للبحث..."
+          style="max-width: 350px"
+        />
+      </div>
+
+
+        <!-- Books Table -->
+        <div class="card shadow-medium">
+            <div class="card-header">
+                <h5 class="mb-0">قائمة الكتب</h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped table-bordered align-middle mb-0" id="booksTable">
+                        <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">الرقم التسلسلي</th>
+                                <th class="text-center">رمز التصنيف</th>
+                                <th class="text-center">العنوان</th>
+                                <th class="text-center">المؤلفون</th>
+                                <th class="text-center">الناشر</th>
+                                <th class="text-center">سنة النشر</th>
+                                <th class="text-center">عدد الصفحات</th>
+                                <th class="text-center">الأفعال</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booksTbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Book Modal - مع إرجاع نظام الـ Tabs الأصلي -->
+    <div class="modal fade" id="bookModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header bg-gradient-primary text-white">
+                    <h5 class="modal-title" id="bookModalTitle">تحديث بيانات الكتاب</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-tabs mb-3" id="bookTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button" role="tab">المعلومات الأساسية</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="authors-tab" data-bs-toggle="tab" data-bs-target="#authors" type="button" role="tab">المؤلفون</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="publish-tab" data-bs-toggle="tab" data-bs-target="#publishers" type="button" role="tab">الناشرون</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="supplier-tab" data-bs-toggle="tab" data-bs-target="#supplier" type="button" role="tab">المزوّد</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button" role="tab">مراجعة البيانات</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- المعلومات الأساسية -->
+                        <div class="tab-pane fade show active" id="info" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">الرقم التسلسلي</label>
+                                    <input type="text" class="form-control" id="bookSerial" readonly>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">رمز التصنيف</label>
+                                    <input type="text" class="form-control" id="bookClassification">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">عنوان الكتاب</label>
+                                    <input type="text" class="form-control" id="bookTitle">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">نوع العنوان</label>
+                                    <select class="form-select" id="bookTitleType">
+                                        <option value="">اختر...</option>
+                                        <option value="رئيسي">رئيسي</option>
+                                        <option value="فرعي">فرعي</option>
+                                        <option value="بديل">بديل</option>
+                                        <option value="موازي">موازي</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">عناوين فرعية</label>
+                                    <div id="bookSubTitlesContainer">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" name="bookSubTitles[]" placeholder="العنوان الفرعي">
+                                            <select class="form-select" name="bookSubTitleType[]">
+                                                <option value="">نوع العنوان</option>
+                                                <option value="فرعي">فرعي</option>
+                                                <option value="بديل">بديل</option>
+                                                <option value="موازي">موازي</option>
+                                            </select>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="addBookSubTitle(this)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">أبعاد الكتاب</label>
+                                    <input type="number" class="form-control" id="bookLength" min="0" placeholder="الطول">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label">المستوى البليوغرافي</label>
+                                    <select class="form-select" id="bookBibliographicLevel">
+                                        <option value="">اختر...</option>
+                                        <option value="كتاب">كتاب</option>
+                                        <option value="مرجع">مرجع</option>
+                                        <option value="مجموعة">مجموعة</option>
+                                        <option value="رسالة جامعية">رسالة جامعية</option>
+                                        <option value="كتب أطفال">كتب أطفال</option>
+                                        <option value="قصة">قصة</option>
+                                        <option value="دورية">دورية</option>
+                                        <option value="سمعيات-بصريات">سمعيات-بصريات</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">المستخلص</label>
+                                    <textarea class="form-control" id="bookAbstract" rows="3"></textarea>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">الإيضاحات</label>
+                                    <textarea class="form-control" id="bookExplanations" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المؤلفون -->
+                        <div class="tab-pane fade" id="authors" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">نوع / دور المؤلف</label>
+                                    <div id="bookAuthorsContainer">
+                                        <div class="input-group mb-2">
+                                            <select class="form-select" name="bookAuthorRole[]">
+                                                <option value="">اختر...</option>
+                                                <option value="رئيسي">رئيسي</option>
+                                                <option value="مساعد مشارك">مساعد مشارك</option>
+                                                <option value="مترجم">مترجم</option>
+                                                <option value="محقق">محقق</option>
+                                                <option value="مدقق">مدقق</option>
+                                                <option value="مراجع">مراجع</option>
+                                                <option value="محرر">محرر</option>
+                                                <option value="معد">معد</option>
+                                                <option value="مقدّم">مقدّم</option>
+                                            </select>
+                                            <input type="text" class="form-control" name="bookAuthorName[]" placeholder="اسم المؤلف">
+                                            <select class="form-select" name="bookAuthorAttribute[]">
+                                                <option value="">صفة المؤلف</option>
+                                                <option value="شخص">شخص</option>
+                                                <option value="ملتقى">ملتقى</option>
+                                                <option value="هيئة">هيئة</option>
+                                                <option value="عنوان">عنوان</option>
+                                            </select>
+                                            <button class="btn btn-outline-secondary" type="button" onclick="addBookAuthor(this)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- الناشرون -->
+                        <div class="tab-pane fade" id="publishers" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label class="form-label">اسم الناشر</label>
+                                    <div id="bookPublishersContainer">
+                                        <div class="input-group mb-2">
+                                            <input type="text" class="form-control" name="bookPublishers[]" placeholder="اسم الناشر">
+                                            <input type="text" class="form-control" name="bookPublisherPlace[]" placeholder="مكان النشر">
+                                            <span class="input-group-text">تاريخ النشر</span>
+                                            <input type="date" class="form-control" name="bookPublisherDate[]">
+                                            <button class="btn btn-outline-secondary" type="button" onclick="addBookPublisher(this)">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">الطبعة</label>
+                                    <input type="text" class="form-control" id="bookEdition">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">رقم ISBN</label>
+                                    <input type="text" class="form-control" id="bookISBN">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">رقم الإيداع</label>
+                                    <input type="text" class="form-control" id="bookDepositNumber">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">عدد الصفحات</label>
+                                    <input type="number" class="form-control" id="bookPagesCount" min="1">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">السلسلة</label>
+                                    <input type="text" class="form-control" id="bookSeries">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">الأجزاء</label>
+                                    <input type="number" class="form-control" id="bookParts" min="1">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- المزود -->
+                        <div class="tab-pane fade" id="supplier" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">تاريخ التزويد</label>
+                                    <input type="date" class="form-control" id="bookSupplyDate">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">طريقة التزويد</label>
+                                    <select id="bookSupplyMethod" class="form-select" onchange="toggleBookPriceField()">
+                                        <option value="">اختر...</option>
+                                        <option value="شراء">شراء</option>
+                                        <option value="إهداء">إهداء</option>
+                                        <option value="تبادل">تبادل</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" id="bookPriceField" style="display: none">
+                                    <label class="form-label">السعر</label>
+                                    <input type="number" class="form-control" id="bookPrice" step="0.01" min="0">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">القسم</label>
+                                    <select id="bookDepartment" class="form-select">
+                                        <option value="">اختر...</option>
+                                        <option value="أدب">أدب</option>
+                                        <option value="تاريخ">تاريخ</option>
+                                        <option value="علوم">علوم</option>
+                                        <option value="فلسفة">فلسفة</option>
+                                        <option value="دين">دين</option>
+                                        <option value="سياسة">سياسة</option>
+                                        <option value="اقتصاد">اقتصاد</option>
+                                        <option value="جغرافيا">جغرافيا</option>
+                                        <option value="أطفال">أطفال</option>
+                                        <option value="مراجع">مراجع</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">ملاحظات</label>
+                                    <textarea class="form-control" id="bookNotes" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- مراجعة البيانات -->
+                        <div class="tab-pane fade" id="review" role="tabpanel">
+                            <div class="p-3 bg-light rounded" id="reviewContent">
+                                <h6>مراجعة البيانات المدخلة:</h6>
+                                <div class="alert alert-info">يرجى مراجعة جميع البيانات قبل الحفظ النهائي</div>
+                                <div id="bookDataReview"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                    <button type="button" class="btn btn-success gradient-success shadow-medium fw-bold" id="saveBookBtn" onclick="saveBook()">حفظ التغييرات</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    // تفعيل اللون فقط للصفحة الحالية
+    const currentPage = window.location.pathname.split("/").pop();
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+    navLinks.forEach(link => {
+        if(link.getAttribute('href') === currentPage){
+            link.classList.add('active'); // يظل أبيض غامق فقط للرابط الحالي
+        } else {
+            link.classList.remove('active');
+        }
+    });
+</script>
+
+    <script>
+        let booksData = [
+            { 
+                serial: '1', 
+                classification: '001.23', 
+                title: 'مدخل إلى علوم الحاسوب', 
+                authors: [
+                    { role: 'رئيسي', name: 'أحمد علي', attribute: 'شخص' },
+                    { role: 'مساعد مشارك', name: 'سارة حسين', attribute: 'شخص' }
+                ],
+                publishers: [
+                    { name: 'دار الفكر', place: 'دمشق', date: '2020-05-01' },
+                    { name: 'مكتبة النور', place: 'بيروت', date: '2020-05-01' }
+                ],
+                subTitle: [
+                    { text: 'دليل المبتدئين', type: 'فرعي' }
+                ],
+                titleType: 'رئيسي',
+                abstract: 'كتاب تعليمي شامل لمبادئ علوم الحاسوب',
+                explanations: 'إيضاحات مهمة للطلاب',
+                length: '25',
+                bibliographicLevel: 'كتاب',
+                edition: 'الأولى',
+                ISBN: '978-3-16-148410-0',
+                depositNumber: 'D12345',
+                pagesCount: '300',
+                series: 'سلسلة التعليم التقني',
+                parts: '1',
+                supplyDate: '2020-05-01',
+                supplyMethod: 'شراء',
+                price: '50',
+                department: 'علوم',
+                notes: 'نسخة مدرسية'
+            },
+            { 
+                serial: '2', 
+                classification: '005.12', 
+                title: 'أساسيات قواعد البيانات', 
+                authors: [
+                    { role: 'رئيسي', name: 'محمد حسن', attribute: 'شخص' }
+                ],
+                publishers: [
+                    { name: 'مكتبة المستقبل', place: 'القاهرة', date: '2021-03-10' }
+                ],
+                subTitle: [],
+                titleType: 'رئيسي',
+                abstract: 'كتاب تعليمي متقدم',
+                explanations: 'إيضاحات مهمة',
+                length: '20',
+                bibliographicLevel: 'كتاب',
+                edition: 'الأولى',
+                ISBN: '978-3-16-148410-1',
+                depositNumber: 'D12346',
+                pagesCount: '250',
+                series: '',
+                parts: '1',
+                supplyDate: '2021-03-10',
+                supplyMethod: 'إهداء',
+                price: '0',
+                department: 'علوم',
+                notes: 'نسخة للمعامل'
+            }
+        ];
+
+        function renderTable(){
+            const tbody = document.getElementById('booksTbody');
+            tbody.innerHTML = '';
+            booksData.forEach((book, idx) => {
+                tbody.innerHTML += `
+                <tr>
+                    <td class="text-center">${book.serial}</td>
+                    <td class="text-center">${book.classification}</td>
+                    <td>${book.title}</td>
+                    <td>${book.authors.map(a => a.name).join('، ')}</td>
+                    <td>${book.publishers.map(p => p.name).join('؛ ')}</td>
+                    <td class="text-center">${book.publishers[0]?.date?.split('-')[0] || ''}</td>
+                    <td class="text-center">${book.pagesCount}</td>
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm me-1" onclick="editBook(${idx})">
+                            ✏️ تعديل
+                        </button>
+                        <button class="btn btn-info btn-sm me-1" onclick="viewBook(${idx})">
+                            👁️ عرض
+                        </button>
+                        <div class="btn-group">
+                            <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                ➕ إضافة
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="addCopy(${idx}); event.stopPropagation();">إضافة نسخة</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="addPart(${idx}); event.stopPropagation();">إضافة جزء</a></li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>`;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTable();
+        });
+
+        let currentIdx = null;
+function editBook(idx){
+    currentIdx = idx; // عشان نعرف أي كتاب بنعدل
+
+    const book = booksData[idx];
+    fillBookForm(book); // تعبية الفورم
+
+    // 🟢 تعبئة المراجعة بنفس بيانات العرض
+    showBookDataSummary(book);
+
+    // إظهار كل التابات
+    document.querySelectorAll('#bookTabs .nav-item').forEach(item => {
+        item.style.display = 'block';
+    });
+
+    // التبديل لأول تاب (المعلومات الأساسية)
+    const infoTab = document.querySelector('#info-tab');
+    new bootstrap.Tab(infoTab).show();
+
+    // تغيير العنوان
+    document.getElementById('bookModalTitle').innerText = 'تحديث بيانات الكتاب';
+
+    // إظهار زر الحفظ
+    document.getElementById('saveBookBtn').style.display = 'inline-block';
+
+    // فتح المودال
+    new bootstrap.Modal(document.getElementById('bookModal')).show();
+}
+
+function addCopy(idx){
+    currentIdx = null;
+    fillBookForm(booksData[idx]);
+    document.getElementById('bookModalTitle').innerText = 'إضافة نسخة جديدة';
+    document.getElementById('saveBookBtn').style.display = 'inline-block'; // يظهر الزر
+    new bootstrap.Modal(document.getElementById('bookModal')).show();
+}
+
+function addPart(idx){
+    currentIdx = null;
+    fillBookForm(booksData[idx]);
+    document.getElementById('bookModalTitle').innerText = 'إضافة جزء جديد';
+    document.getElementById('saveBookBtn').style.display = 'inline-block'; // يظهر الزر
+    new bootstrap.Modal(document.getElementById('bookModal')).show();
+}
+
+
+ // عرض بيانات الكتاب
+function viewBook(idx){
+    const book = booksData[idx];
+    showBookDataSummary(book);
+
+    // إخفاء كل التابات ما عدا مراجعة البيانات
+    document.querySelectorAll('#bookTabs .nav-item').forEach(item => {
+        item.style.display = 'none';
+    });
+    document.getElementById('review-tab').parentElement.style.display = 'block';
+
+    // التبديل لتبويب المراجعة
+    const reviewTab = document.querySelector('#review-tab');
+    new bootstrap.Tab(reviewTab).show();
+
+    // تغيير العنوان
+    document.getElementById('bookModalTitle').innerText = 'عرض بيانات الكتاب';
+
+    // إخفاء زر الحفظ
+    document.getElementById('saveBookBtn').style.display = 'none';
+
+    // فتح المودال
+    new bootstrap.Modal(document.getElementById('bookModal')).show();
+}
+
+
+function filterBooks() {
+    const query = document.getElementById('searchInput').value.toLowerCase();
+    const tbody = document.getElementById('booksTbody');
+    tbody.innerHTML = '';
+
+    booksData.forEach((book, idx) => {
+        const title = book.title.toLowerCase();
+        const authors = book.authors.map(a => a.name.toLowerCase()).join(' ');
+        const publishers = book.publishers.map(p => p.name.toLowerCase()).join(' ');
+        
+        if(title.includes(query) || authors.includes(query) || publishers.includes(query)) {
+            tbody.innerHTML += `
+            <tr>
+                <td class="text-center">${book.serial}</td>
+                <td class="text-center">${book.classification}</td>
+                <td>${book.title}</td>
+                <td>${book.authors.map(a => a.name).join('، ')}</td>
+                <td>${book.publishers.map(p => p.name).join('؛ ')}</td>
+                <td class="text-center">${book.publishers[0]?.date?.split('-')[0] || ''}</td>
+                <td class="text-center">${book.pagesCount}</td>
+                <td class="text-center">
+                    <button class="btn btn-warning btn-sm me-1" onclick="editBook(${idx})">
+                        ✏️ تعديل
+                    </button>
+                    <button class="btn btn-info btn-sm me-1" onclick="viewBook(${idx})">
+                        👁️ عرض
+                    </button>
+                    <div class="btn-group">
+                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            ➕ إضافة
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="addCopy(${idx}); event.stopPropagation();">إضافة نسخة</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addPart(${idx}); event.stopPropagation();">إضافة جزء</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>`;
+        }
+    });
+}
+
+
+        function fillBookForm(book){
+            // Basic Info
+            document.getElementById('bookSerial').value = book.serial;
+            document.getElementById('bookClassification').value = book.classification;
+            document.getElementById('bookTitle').value = book.title;
+            document.getElementById('bookTitleType').value = book.titleType || '';
+            document.getElementById('bookLength').value = book.length || '';
+            document.getElementById('bookBibliographicLevel').value = book.bibliographicLevel || '';
+            document.getElementById('bookAbstract').value = book.abstract || '';
+            document.getElementById('bookExplanations').value = book.explanations || '';
+
+            // Clear and refill Sub Titles
+            const subTitlesContainer = document.getElementById('bookSubTitlesContainer');
+            subTitlesContainer.innerHTML = '';
+            if (book.subTitle && book.subTitle.length > 0) {
+                book.subTitle.forEach(st => {
+                    addSubTitleField(subTitlesContainer, st.text, st.type);
+                });
+            } else {
+                addSubTitleField(subTitlesContainer);
+            }
+
+            // Authors
+            const authorsContainer = document.getElementById('bookAuthorsContainer');
+            authorsContainer.innerHTML = '';
+            if (book.authors && book.authors.length > 0) {
+                book.authors.forEach(author => {
+                    addAuthorField(authorsContainer, author.role, author.name, author.attribute);
+                });
+            } else {
+                addAuthorField(authorsContainer);
+            }
+
+            // Publishers
+            const publishersContainer = document.getElementById('bookPublishersContainer');
+            publishersContainer.innerHTML = '';
+            if (book.publishers && book.publishers.length > 0) {
+                book.publishers.forEach(pub => {
+                    addPublisherField(publishersContainer, pub.name, pub.place, pub.date);
+                });
+            } else {
+                addPublisherField(publishersContainer);
+            }
+
+            // Publishing Info
+            document.getElementById('bookEdition').value = book.edition || '';
+            document.getElementById('bookISBN').value = book.ISBN || '';
+            document.getElementById('bookDepositNumber').value = book.depositNumber || '';
+            document.getElementById('bookPagesCount').value = book.pagesCount || '';
+            document.getElementById('bookSeries').value = book.series || '';
+            document.getElementById('bookParts').value = book.parts || '';
+
+            // Supplier Info
+            document.getElementById('bookSupplyDate').value = book.supplyDate || '';
+            document.getElementById('bookSupplyMethod').value = book.supplyMethod || '';
+            if (book.supplyMethod === 'شراء') {
+                document.getElementById('bookPriceField').style.display = 'block';
+            } else {
+                document.getElementById('bookPriceField').style.display = 'none';
+            }
+            document.getElementById('bookPrice').value = book.price || '';
+            document.getElementById('bookDepartment').value = book.department || '';
+            document.getElementById('bookNotes').value = book.notes || '';
+        }
+
+        function addSubTitleField(container, text = '', type = '') {
+            const div = document.createElement("div");
+            div.className = "input-group mb-2";
+            div.innerHTML = `
+                <input type="text" class="form-control" name="bookSubTitles[]" value="${text}" placeholder="العنوان الفرعي">
+                <select class="form-select" name="bookSubTitleType[]">
+                    <option value="">نوع العنوان</option>
+                    <option value="رئيسي" ${type === 'رئيسي' ? 'selected' : ''}>رئيسي</option>
+                    <option value="فرعي" ${type === 'فرعي' ? 'selected' : ''}>فرعي</option>
+                    <option value="بديل" ${type === 'بديل' ? 'selected' : ''}>بديل</option>
+                    <option value="موازي" ${type === 'موازي' ? 'selected' : ''}>موازي</option>
+                </select>
+                <button class="btn btn-outline-danger" type="button" onclick="this.parentNode.remove()">-</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addAuthorField(container, role = '', name = '', attribute = '') {
+            const div = document.createElement("div");
+            div.className = "input-group mb-2";
+            div.innerHTML = `
+                <select class="form-select" name="bookAuthorRole[]">
+                    <option value="">اختر...</option>
+                    <option value="رئيسي" ${role === 'رئيسي' ? 'selected' : ''}>رئيسي</option>
+                    <option value="مساعد مشارك" ${role === 'مساعد مشارك' ? 'selected' : ''}>مساعد مشارك</option>
+                    <option value="مترجم" ${role === 'مترجم' ? 'selected' : ''}>مترجم</option>
+                    <option value="محقق" ${role === 'محقق' ? 'selected' : ''}>محقق</option>
+                    <option value="مدقق" ${role === 'مدقق' ? 'selected' : ''}>مدقق</option>
+                    <option value="مراجع" ${role === 'مراجع' ? 'selected' : ''}>مراجع</option>
+                    <option value="محرر" ${role === 'محرر' ? 'selected' : ''}>محرر</option>
+                    <option value="معد" ${role === 'معد' ? 'selected' : ''}>معد</option>
+                    <option value="مقدّم" ${role === 'مقدّم' ? 'selected' : ''}>مقدّم</option>
+                </select>
+                <input type="text" class="form-control" name="bookAuthorName[]" value="${name}" placeholder="اسم المؤلف">
+                <select class="form-select" name="bookAuthorAttribute[]">
+                    <option value="">صفة المؤلف</option>
+                    <option value="شخص" ${attribute === 'شخص' ? 'selected' : ''}>شخص</option>
+                    <option value="ملتقى" ${attribute === 'ملتقى' ? 'selected' : ''}>ملتقى</option>
+                    <option value="هيئة" ${attribute === 'هيئة' ? 'selected' : ''}>هيئة</option>
+                    <option value="عنوان" ${attribute === 'عنوان' ? 'selected' : ''}>عنوان</option>
+                </select>
+                <button class="btn btn-outline-danger" type="button" onclick="this.parentNode.remove()">-</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addPublisherField(container, name = '', place = '', date = '') {
+            const div = document.createElement("div");
+            div.className = "input-group mb-2";
+            div.innerHTML = `
+                <input type="text" class="form-control" name="bookPublishers[]" value="${name}" placeholder="اسم الناشر">
+                <input type="text" class="form-control" name="bookPublisherPlace[]" value="${place}" placeholder="مكان النشر">
+                <input type="date" class="form-control" name="bookPublisherDate[]" value="${date}" placeholder="تاريخ النشر">
+                <button class="btn btn-outline-danger" type="button" onclick="this.parentNode.remove()">-</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addBookSubTitle(button) {
+            const container = document.getElementById('bookSubTitlesContainer');
+            addSubTitleField(container);
+        }
+
+        function addBookAuthor(button) {
+            const container = document.getElementById('bookAuthorsContainer');
+            addAuthorField(container);
+        }
+
+        function addBookPublisher(button) {
+            const container = document.getElementById('bookPublishersContainer');
+            addPublisherField(container);
+        }
+
+        function toggleBookPriceField() {
+            const val = document.getElementById("bookSupplyMethod").value;
+            const priceField = document.getElementById("bookPriceField");
+            if (val === "شراء") priceField.style.display = "block";
+            else { 
+                priceField.style.display = "none"; 
+                document.getElementById("bookPrice").value = ""; 
+            }
+        }
+
+        function showBookDataSummary(book) {
+            let html = "";
+            
+            // Basic Info
+            html += `<h6>المعلومات الأساسية:</h6>`;
+            html += `<p><strong>العنوان:</strong> ${book.title}<br>`;
+            html += `<strong>رمز التصنيف:</strong> ${book.classification}<br>`;
+            if (book.subTitle && book.subTitle.length > 0) {
+                html += `<strong>العناوين الفرعية:</strong> ${book.subTitle.map(st => `${st.text} (${st.type})`).join(", ")}<br>`;
+            }
+            html += `<strong>نوع العنوان:</strong> ${book.titleType}<br>`;
+            html += `<strong>المستخلص:</strong> ${book.abstract}<br>`;
+            html += `<strong>الإيضاحات:</strong> ${book.explanations}<br>`;
+            html += `<strong>الأبعاد:</strong> ${book.length} سم<br>`;
+            html += `<strong>المستوى البليوغرافي:</strong> ${book.bibliographicLevel}</p>`;
+
+            // Authors
+            if (book.authors && book.authors.length > 0) {
+                html += `<h6>المؤلفون:</h6><p>`;
+                book.authors.forEach(author => {
+                    html += `${author.name} - ${author.role} - ${author.attribute}<br>`;
+                });
+                html += `</p>`;
+            }
+
+            // Publishers
+            if (book.publishers && book.publishers.length > 0) {
+                html += `<h6>الناشرون:</h6><p>`;
+                book.publishers.forEach(pub => {
+                    html += `${pub.name} - ${pub.place} - ${pub.date}<br>`;
+                });
+                html += `</p>`;
+            }
+
+            // Publishing Info
+            html += `<h6>معلومات النشر:</h6><p>`;
+            html += `<strong>الطبعة:</strong> ${book.edition}<br>`;
+            html += `<strong>ISBN:</strong> ${book.ISBN}<br>`;
+            html += `<strong>رقم الإيداع:</strong> ${book.depositNumber}<br>`;
+            html += `<strong>عدد الصفحات:</strong> ${book.pagesCount}<br>`;
+            html += `<strong>السلسلة:</strong> ${book.series}<br>`;
+            html += `<strong>الأجزاء:</strong> ${book.parts}</p>`;
+
+            // Supplier Info
+            html += `<h6>المزوّد:</h6><p>`;
+            html += `<strong>طريقة التزويد:</strong> ${book.supplyMethod}<br>`;
+            html += `<strong>السعر:</strong> ${book.price}<br>`;
+            html += `<strong>القسم:</strong> ${book.department}<br>`;
+            html += `<strong>ملاحظات:</strong> ${book.notes}</p>`;
+
+            document.getElementById("bookDataReview").innerHTML = html;
+        }
+
+        function saveBook(){
+            // Collect sub titles
+            const subTitles = [];
+            const subTitlesInputs = document.querySelectorAll('input[name="bookSubTitles[]"]');
+            const subTitleTypes = document.querySelectorAll('select[name="bookSubTitleType[]"]');
+            subTitlesInputs.forEach((input, i) => {
+                if (input.value.trim()) {
+                    subTitles.push({
+                        text: input.value,
+                        type: subTitleTypes[i]?.value || ''
+                    });
+                }
+            });
+
+            // Collect authors
+            const authors = [];
+            const authorRoles = document.querySelectorAll('select[name="bookAuthorRole[]"]');
+            const authorNames = document.querySelectorAll('input[name="bookAuthorName[]"]');
+            const authorAttributes = document.querySelectorAll('select[name="bookAuthorAttribute[]"]');
+            authorNames.forEach((input, i) => {
+                if (input.value.trim()) {
+                    authors.push({
+                        role: authorRoles[i]?.value || '',
+                        name: input.value,
+                        attribute: authorAttributes[i]?.value || ''
+                    });
+                }
+            });
+
+            // Collect publishers
+            const publishers = [];
+            const publisherNames = document.querySelectorAll('input[name="bookPublishers[]"]');
+            const publisherPlaces = document.querySelectorAll('input[name="bookPublisherPlace[]"]');
+            const publisherDates = document.querySelectorAll('input[name="bookPublisherDate[]"]');
+            publisherNames.forEach((input, i) => {
+                if (input.value.trim()) {
+                    publishers.push({
+                        name: input.value,
+                        place: publisherPlaces[i]?.value || '',
+                        date: publisherDates[i]?.value || ''
+                    });
+                }
+            });
+
+            const book = {
+                serial: document.getElementById('bookSerial').value,
+                classification: document.getElementById('bookClassification').value,
+                title: document.getElementById('bookTitle').value,
+                titleType: document.getElementById('bookTitleType').value,
+                subTitle: subTitles,
+                abstract: document.getElementById('bookAbstract').value,
+                explanations: document.getElementById('bookExplanations').value,
+                length: document.getElementById('bookLength').value,
+                bibliographicLevel: document.getElementById('bookBibliographicLevel').value,
+                authors: authors,
+                publishers: publishers,
+                edition: document.getElementById('bookEdition').value,
+                ISBN: document.getElementById('bookISBN').value,
+                depositNumber: document.getElementById('bookDepositNumber').value,
+                pagesCount: document.getElementById('bookPagesCount').value,
+                series: document.getElementById('bookSeries').value,
+                parts: document.getElementById('bookParts').value,
+                supplyDate: document.getElementById('bookSupplyDate').value,
+                supplyMethod: document.getElementById('bookSupplyMethod').value,
+                price: document.getElementById('bookPrice').value,
+                department: document.getElementById('bookDepartment').value,
+                notes: document.getElementById('bookNotes').value
+            };
+
+            if(currentIdx !== null){
+                booksData[currentIdx] = book;
+            } else {
+                book.serial = (booksData.length + 1).toString();
+                booksData.push(book);
+            }
+
+            renderTable();
+            bootstrap.Modal.getInstance(document.getElementById('bookModal')).hide();
+        }
+
+        // Functions for Add Copy / Part
+       function addCopy(idx){
+    addCopyOrPart(idx, 'نسخة');
+}
+
+function addPart(idx){
+    addCopyOrPart(idx, 'جزء');
+}
+
+
+        function addCopyOrPart(idx, type = 'نسخة') {
+    currentIdx = null;
+    const book = booksData[idx];
+
+    // 🟢 المعلومات الأساسية
+    document.getElementById('bookSerial').value = '';
+    document.getElementById('bookClassification').value = book.classification;
+    document.getElementById('bookTitle').value = book.title;
+    document.getElementById('bookTitleType').value = book.titleType || '';
+    document.getElementById('bookLength').value = book.length || '';
+    document.getElementById('bookBibliographicLevel').value = book.bibliographicLevel || '';
+    document.getElementById('bookAbstract').value = book.abstract || '';
+    document.getElementById('bookExplanations').value = book.explanations || '';
+
+    // 🟢 الحقول الفارغة
+    document.getElementById('bookSubTitlesContainer').innerHTML = '';
+    addSubTitleField(document.getElementById('bookSubTitlesContainer'));
+
+    document.getElementById('bookAuthorsContainer').innerHTML = '';
+    addAuthorField(document.getElementById('bookAuthorsContainer'));
+
+    document.getElementById('bookPublishersContainer').innerHTML = '';
+    addPublisherField(document.getElementById('bookPublishersContainer'));
+
+    document.getElementById('bookEdition').value = '';
+    document.getElementById('bookISBN').value = '';
+    document.getElementById('bookDepositNumber').value = '';
+    document.getElementById('bookPagesCount').value = '';
+    document.getElementById('bookSeries').value = '';
+    document.getElementById('bookParts').value = '';
+
+    document.getElementById('bookSupplyDate').value = '';
+    document.getElementById('bookSupplyMethod').value = '';
+    document.getElementById('bookPrice').value = '';
+    document.getElementById('bookDepartment').value = '';
+    document.getElementById('bookNotes').value = '';
+
+    // 🟢 تعديل عنوان المودال
+    document.getElementById('bookModalTitle').innerText = `إضافة ${type} جديد`;
+    document.getElementById('saveBookBtn').style.display = 'inline-block';
+    new bootstrap.Modal(document.getElementById('bookModal')).show();
+}
+
+
+        function searchBooks() {
+    const title = document.getElementById('searchTitle').value.trim().toLowerCase();
+    const author = document.getElementById('searchAuthor').value.trim().toLowerCase();
+    const classification = document.getElementById('searchClassification').value.trim().toLowerCase();
+
+    const filteredBooks = booksData.filter(book => {
+        const matchesTitle = book.title.toLowerCase().includes(title);
+        const matchesAuthor = book.authors.some(a => a.name.toLowerCase().includes(author));
+        const matchesClassification = book.classification.toLowerCase().includes(classification);
+        return (title ? matchesTitle : true) &&
+               (author ? matchesAuthor : true) &&
+               (classification ? matchesClassification : true);
+    });
+
+    // تحديث الجدول بالنتائج
+    const tbody = document.getElementById('booksTbody');
+    tbody.innerHTML = '';
+    filteredBooks.forEach((book, idx) => {
+        tbody.innerHTML += `
+            <tr>
+                <td class="text-center">${book.serial}</td>
+                <td class="text-center">${book.classification}</td>
+                <td>${book.title}</td>
+                <td>${book.authors.map(a => a.name).join('، ')}</td>
+                <td>${book.publishers.map(p => p.name).join('؛ ')}</td>
+                <td class="text-center">${book.publishers[0]?.date?.split('-')[0] || ''}</td>
+                <td class="text-center">${book.pagesCount}</td>
+                <td class="text-center">
+                    <button class="btn btn-warning btn-sm me-1" onclick="editBook(${idx})">✏️ تعديل</button>
+                    <button class="btn btn-info btn-sm me-1" onclick="viewBook(${idx})">👁️ عرض</button>
+                    <div class="btn-group">
+                        <button class="btn btn-success btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">➕ إضافة</button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="addCopy(${idx}); event.stopPropagation();">إضافة نسخة</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="addPart(${idx}); event.stopPropagation();">إضافة جزء</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        `;
+    });
+
+    // إغلاق نافذة البحث
+    bootstrap.Modal.getInstance(document.getElementById('searchBookModal')).hide();
+}
+
+    </script>
+</body>
+</html>

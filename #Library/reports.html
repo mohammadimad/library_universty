@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المكتبة - التقارير</title>
+    <meta name="description" content="نظام إدارة المكتبة الشامل مع تقارير متقدمة">
+    
+    <!-- Bootstrap RTL CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+    
+    <!-- Arabic Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* Background & Surface Colors */
+            --background: hsl(218, 100%, 97%);
+            --foreground: hsl(215, 25%, 15%);
+            --surface: hsl(0, 0%, 100%);
+            --surface-alt: hsl(220, 15%, 96%);
+
+            /* Brand Colors */
+            --primary: hsl(215, 90%, 52%);
+            --primary-foreground: hsl(0, 0%, 100%);
+            --primary-light: hsl(215, 85%, 65%);
+            --primary-dark: hsl(215, 95%, 42%);
+
+            /* Secondary Brand */
+            --secondary: hsl(195, 85%, 48%);
+            --secondary-foreground: hsl(0, 0%, 100%);
+            --secondary-light: hsl(195, 80%, 65%);
+
+            /* Accent Colors */
+            --accent: hsl(275, 75%, 55%);
+            --success: hsl(142, 76%, 45%);
+            --warning: hsl(38, 92%, 55%);
+            --destructive: hsl(0, 84%, 60%);
+
+            /* Neutral Colors */
+            --muted: hsl(220, 15%, 94%);
+            --muted-foreground: hsl(215, 16%, 47%);
+            --border: hsl(220, 13%, 88%);
+
+            /* Shadows */
+            --shadow-soft: 0 2px 8px -2px hsl(215, 25%, 15%, 0.08);
+            --shadow-medium: 0 4px 16px -4px hsl(215, 25%, 15%, 0.12);
+            --shadow-large: 0 8px 32px -8px hsl(215, 25%, 15%, 0.16);
+            --shadow-glow: 0 0 32px hsl(215, 90%, 52%, 0.3);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--background);
+            color: var(--foreground);
+            line-height: 1.6;
+        }
+
+        /* Custom utility classes */
+        .gradient-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        }
+        
+        .gradient-secondary {
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+        }
+        
+        .gradient-success {
+            background: linear-gradient(135deg, var(--success), hsl(155, 70%, 55%));
+        }
+        
+        .gradient-surface {
+            background: linear-gradient(180deg, var(--surface), var(--surface-alt));
+        }
+        
+        .shadow-soft { box-shadow: var(--shadow-soft); }
+        .shadow-medium { box-shadow: var(--shadow-medium); }
+        .shadow-large { box-shadow: var(--shadow-large); }
+        .shadow-glow { box-shadow: var(--shadow-glow); }
+        
+        .transition-smooth {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Navigation */
+        .navbar {
+            top: 10px;
+            right: 10px;
+            left: 10px;
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-brand img {
+            border-radius: 50%;
+        }
+
+        /* Container */
+        .container {
+            padding-top: 100px;
+        }
+
+        /* Cards */
+        .stats-card {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-medium);
+            transition: var(--transition-smooth);
+        }
+
+        .stats-card:hover {
+            box-shadow: var(--shadow-large);
+            transform: translateY(-2px);
+        }
+
+        .filter-card {
+            background-color: var(--surface);
+            border-right: 4px solid var(--primary);
+            box-shadow: var(--shadow-soft);
+            border-radius: 1rem;
+            transition: var(--transition-smooth);
+        }
+
+        .filter-card:hover {
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Table Styling */
+        .table {
+            border-radius: 0.75rem;
+            overflow: hidden;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: var(--muted);
+            transition: var(--transition-smooth);
+        }
+
+        .highlight-column {
+            background-color: rgba(var(--primary-rgb), 0.1) !important;
+            color: var(--primary) !important;
+            font-weight: 600 !important;
+        }
+
+        /* Status badges */
+        .status-available {
+            background-color: rgba(var(--success-rgb), 0.1);
+            color: var(--success);
+        }
+
+        .status-borrowed {
+            background-color: rgba(var(--warning-rgb), 0.1);
+            color: var(--warning);
+        }
+
+        .status-discarded {
+            background-color: rgba(var(--destructive-rgb), 0.1);
+            color: var(--destructive);
+        }
+
+        /* Report section */
+        .report-header {
+            background: var(--gradient-surface);
+            border-bottom: 1px solid var(--border);
+            border-radius: 1rem 1rem 0 0;
+        }
+
+        /* Print styles */
+        @media print {
+            body * { visibility: hidden !important; }
+            #reportSection, #reportSection * { visibility: visible !important; }
+            #reportSection { 
+                position: absolute; 
+                top: 0; 
+                left: 0; 
+                width: 100%; 
+                padding: 20px; 
+            }
+            .no-print { display: none !important; }
+            .navbar, .filter-section, .stats-cards { display: none !important; }
+            table { 
+                width: 100% !important; 
+                border-collapse: collapse !important; 
+                margin-top: 20px;
+            }
+            table th, table td { 
+                border: 1px solid #000 !important; 
+                padding: 8px !important; 
+                font-size: 12px !important;
+                text-align: center !important;
+            }
+            #reportTitle { 
+                margin: 20px 0; 
+                font-size: 24px; 
+                text-align: center; 
+                font-weight: bold; 
+                page-break-after: avoid;
+            }
+            #reportHeader { 
+                display: flex !important; 
+                justify-content: space-between; 
+                align-items: center; 
+                margin-bottom: 15px; 
+                padding: 10px 0;
+                border-bottom: 2px solid #000;
+            }
+        }
+
+        /* Loading animation */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+
+        /* Empty state */
+        .no-data {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--muted-foreground);
+        }
+
+        .no-data .icon {
+            font-size: 4rem;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container { padding-top: 120px; }
+            .navbar { position: relative; top: 0; margin: 10px; }
+            .export-buttons { flex-direction: column; gap: 0.5rem; }
+            .table-responsive { font-size: 0.875rem; }
+        }
+    </style>
+</head>
+
+<body>
+  <nav
+    class="navbar navbar-expand-lg navbar-dark bg-dark py-3 px-4 rounded-3 shadow-lg"
+  >
+    <div class="container-fluid">
+      <a class="navbar-brand" href="index.html">
+        <img
+          src="./slogan.png"
+          alt="Logo"
+          class="rounded-circle me-2"
+          width="64px"
+          height="64px"
+        />
+        إدارة الكتب 
+      </a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div
+        class="collapse navbar-collapse justify-content-center"
+        id="navbarNavDropdown"
+      >
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="add-book.html">📚 إضافة كتاب جديد</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="update-books.html">📖 عرض وتحديث الكتب</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="advanced-search.html">🔍 بحث عن كتاب</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="reports.html"
+              >📈 التقارير</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="delete-books.html"
+              >🗑️ حذف كتاب</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+    <div class="container mt-4">
+        <!-- Page Header -->
+        <div class="mb-5 no-print">
+            <h1 class="display-5 fw-bold text-primary mb-2 d-flex align-items-center gap-3">
+                📈 لوحة التقارير
+            </h1>
+            <p class="text-muted fs-5">إدارة وعرض تقارير المكتبة الشاملة</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-5 stats-cards no-print">
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card stats-card text-center p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50">إجمالي الكتب</h6>
+                            <h2 class="fw-bold" id="totalBooks">1,284</h2>
+                        </div>
+                        <div style="font-size: 3rem; opacity: 0.8;">📚</div>
+                    </div>
+                    <small class="text-white-50 mt-2 d-block">📊 آخر تحديث: الآن</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card gradient-secondary text-white text-center p-4 shadow-medium">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50">الكتب المُعارة</h6>
+                            <h2 class="fw-bold" id="borrowedBooks">156</h2>
+                        </div>
+                        <div style="font-size: 3rem; opacity: 0.8;">📖</div>
+                    </div>
+                    <small class="text-white-50 mt-2 d-block">📊 آخر تحديث: الآن</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card gradient-success text-white text-center p-4 shadow-medium">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50">كتب جديدة</h6>
+                            <h2 class="fw-bold" id="newBooks">42</h2>
+                        </div>
+                        <div style="font-size: 3rem; opacity: 0.8;">✨</div>
+                    </div>
+                    <small class="text-white-50 mt-2 d-block">📊 هذا الشهر</small>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-3">
+                <div class="card stats-card text-center p-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-white-50">المراجع المتاحة</h6>
+                            <h2 class="fw-bold" id="references">328</h2>
+                        </div>
+                        <div style="font-size: 3rem; opacity: 0.8;">📋</div>
+                    </div>
+                    <small class="text-white-50 mt-2 d-block">📊 آخر تحديث: الآن</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Report Filters -->
+        <div class="card filter-card p-4 mb-5 filter-section no-print">
+            <div class="card-header bg-transparent border-0 pb-2">
+                <h5 class="card-title fw-bold d-flex align-items-center gap-2 mb-0">
+                    🎯 خيارات التقرير
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <div class="row g-4 align-items-end">
+                    <!-- Report Type Selection -->
+                    <div class="col-md-4">
+                        <label for="reportType" class="form-label fw-semibold">اختر نوع التقرير</label>
+                        <select id="reportType" class="form-select form-select-lg">
+                            <option value="classificationRange">تقرير حسب أرقام التصنيف</option>
+                            <option value="entryDateRange">تقرير حسب تاريخ الإدخال</option>
+                            <option value="supplyMethodPurchase">تقرير حسب طريقة التزويد (شراء)</option>
+                            <option value="supplyMethodGift">تقرير حسب طريقة التزويد (إهداء)</option>
+                            <option value="supplyMethodExchange">تقرير حسب طريقة التزويد (تبادل)</option>
+                            <option value="itemTypeReference">تقرير حسب نوع المادة (مرجع)</option>
+                            <option value="itemTypeBook">تقرير حسب نوع المادة (كتاب)</option>
+                            <option value="borrowed">تقرير الكتب المُعارة</option>
+                            <option value="discarded">تقرير الكتب المُخرجة</option>
+                            <option value="category">تقرير حسب الفئة</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Dynamic Filters -->
+                    <div class="col-md-4" id="dynamicFilters">
+                        <!-- Classification Range Filters -->
+                        <div id="classificationFilters">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <label class="form-label">من رقم تصنيف</label>
+                                    <input type="text" class="form-control" id="classificationFrom" placeholder="A100">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">إلى رقم تصنيف</label>
+                                    <input type="text" class="form-control" id="classificationTo" placeholder="A999">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Date Range Filters -->
+                        <div id="dateFilters" class="d-none">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <label class="form-label">من تاريخ</label>
+                                    <input type="date" class="form-control" id="dateFrom">
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label">إلى تاريخ</label>
+                                    <input type="date" class="form-control" id="dateTo">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div id="categoryFilters" class="d-none">
+                            <label class="form-label">اختر الفئة</label>
+                            <select id="categorySelect" class="form-select">
+                                <option value="science">علمي</option>
+                                <option value="history">تاريخي</option>
+                                <option value="literature">أدب</option>
+                                <option value="economy">اقتصاد</option>
+                                <option value="religious">ديني</option>
+                                <option value="political">سياسة</option>
+                            </select>
+                        </div>
+
+                        <!-- Borrower Filter -->
+                        <div id="borrowedFilters" class="d-none">
+                            <label class="form-label">اسم المستعير</label>
+                            <input type="text" class="form-control" id="borrowerName" placeholder="البحث بالاسم...">
+                            <div class="form-check mt-2">
+                                <input type="checkbox" class="form-check-input" id="overdueOnly">
+                                <label class="form-check-label" for="overdueOnly">الكتب المتأخرة فقط</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Generate Button -->
+                    <div class="col-md-4">
+                        <button id="generateReportBtn" class="btn btn-lg btn-primary gradient-primary w-100 shadow-medium fw-bold">
+                            📊 عرض التقرير
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loading Spinner -->
+        <div class="loading-spinner" id="loadingSpinner">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">جاري التحميل...</span>
+            </div>
+            <p class="mt-3 text-muted">جاري إنشاء التقرير...</p>
+        </div>
+
+        <!-- Report Section -->
+        <div id="reportSection" style="display: none;">
+            <!-- Print Header (hidden on screen) -->
+            <div id="reportHeader" class="d-none">
+                <div class="d-flex justify-content-between align-items-center mb-4 p-3">
+                    <div style="font-size: 4rem;">📚</div>
+                    <div class="text-center">
+                        <h2 class="fw-bold mb-1">نظام إدارة المكتبة</h2>
+                        <p class="mb-0">تقرير شامل للكتب والمواد</p>
+                    </div>
+                    <div class="text-start">
+                        <small>تاريخ التقرير: <span id="reportDate"></span></small><br>
+                        <small>إجمالي النتائج: <span id="totalResults">0</span></small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report Controls -->
+            <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+                <h2 id="reportTitle" class="fw-bold text-primary mb-0">تقرير الكتب</h2>
+                <div class="export-buttons d-flex gap-2">
+                    <button class="btn btn-outline-success btn-sm" onclick="exportToExcel()">
+                        📊 تصدير Excel
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="exportToPDF()">
+                        📄 تصدير PDF
+                    </button>
+                    <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">
+                        🖨️ طباعة
+                    </button>
+                </div>
+            </div>
+
+            <!-- Report Table -->
+            <div class="card shadow-medium">
+                <div class="card-header report-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0 fw-semibold">نتائج التقرير</h5>
+                        <span class="badge bg-primary fs-6" id="resultCount">0 نتيجة</span>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped mb-0" id="reportTable">
+                            <thead class="table-dark">
+                                <tr id="tableHeader">
+                                    <!-- Dynamic headers will be inserted here -->
+                                </tr>
+                            </thead>
+                            <tbody id="reportTableBody">
+                                <!-- Dynamic content will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    // تفعيل اللون فقط للصفحة الحالية
+    const currentPage = window.location.pathname.split("/").pop();
+    const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+    navLinks.forEach(link => {
+        if(link.getAttribute('href') === currentPage){
+            link.classList.add('active'); // يظل أبيض غامق فقط للرابط الحالي
+        } else {
+            link.classList.remove('active');
+        }
+    });
+</script>
+    
+    <!-- Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+        // Sample Data
+        const sampleData = [
+            {title:"مدخل إلى علوم الحاسوب", authors:"أحمد علي، سارة حسين", serial:"123456", class:"A123", date:"2024-01-01", type:"كتاب", method:"شراء", category:"science", status:"available", borrower:null, borrowDate:null, returnDate:null},
+            {title:"مبادئ البرمجة الحديثة", authors:"فاطمة يوسف", serial:"123457", class:"A124", date:"2024-05-15", type:"مرجع", method:"إهداء", category:"science", status:"borrowed", borrower:"محمد أحمد", borrowDate:"2024-09-01", returnDate:"2024-09-15"},
+            {title:"قواعد البيانات المتقدمة", authors:"محمد خالد", serial:"123458", class:"B200", date:"2023-11-20", type:"كتاب", method:"شراء", category:"science", status:"borrowed", borrower:"ليلى سالم", borrowDate:"2024-08-15", returnDate:"2024-08-29"},
+            {title:"تاريخ الحضارات القديمة", authors:"ليلى ناصر", serial:"123459", class:"C300", date:"2022-12-10", type:"كتاب", method:"تبادل", category:"history", status:"discarded", borrower:null, borrowDate:null, returnDate:null},
+            {title:"الأدب العربي المعاصر", authors:"عبد الرحمن قاسم", serial:"123460", class:"D400", date:"2024-03-20", type:"كتاب", method:"شراء", category:"literature", status:"available", borrower:null, borrowDate:null, returnDate:null},
+            {title:"إدارة الموارد البشرية", authors:"نور الهدى محمد", serial:"123461", class:"E150", date:"2024-02-10", type:"مرجع", method:"إهداء", category:"economy", status:"available", borrower:null, borrowDate:null, returnDate:null},
+            {title:"الفيزياء الحديثة", authors:"خالد أحمد", serial:"123462", class:"F250", date:"2023-08-15", type:"كتاب", method:"شراء", category:"science", status:"borrowed", borrower:"أمينة علي", borrowDate:"2024-09-10", returnDate:"2024-09-24"}
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('reportDate').textContent = new Date().toLocaleDateString('ar-EG');
+            
+            // Setup event listeners
+            document.getElementById('reportType').addEventListener('change', handleReportTypeChange);
+            document.getElementById('generateReportBtn').addEventListener('click', generateReport);
+            
+            // Initialize with default view
+            handleReportTypeChange();
+        });
+
+        // Handle report type change
+        function handleReportTypeChange() {
+            const reportType = document.getElementById('reportType').value;
+            
+            // Hide all filter sections
+            document.getElementById('classificationFilters').classList.add('d-none');
+            document.getElementById('dateFilters').classList.add('d-none');
+            document.getElementById('categoryFilters').classList.add('d-none');
+            document.getElementById('borrowedFilters').classList.add('d-none');
+            
+            // Show relevant filter section
+            switch(reportType) {
+                case 'classificationRange':
+                    document.getElementById('classificationFilters').classList.remove('d-none');
+                    break;
+                case 'entryDateRange':
+                    document.getElementById('dateFilters').classList.remove('d-none');
+                    break;
+                case 'category':
+                    document.getElementById('categoryFilters').classList.remove('d-none');
+                    break;
+                case 'borrowed':
+                    document.getElementById('borrowedFilters').classList.remove('d-none');
+                    break;
+                default:
+                    document.getElementById('dateFilters').classList.remove('d-none');
+                    break;
+            }
+        }
+
+        // Generate Report
+        function generateReport() {
+            const reportType = document.getElementById('reportType').value;
+            const reportTitle = document.getElementById('reportType').selectedOptions[0].text;
+            
+            // Show loading
+            document.getElementById('loadingSpinner').style.display = 'block';
+            document.getElementById('reportSection').style.display = 'none';
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                let filteredData = [...sampleData];
+                
+                // Apply filters based on report type
+                switch(reportType) {
+                    case 'classificationRange':
+                        const from = document.getElementById('classificationFrom').value.trim().toUpperCase();
+                        const to = document.getElementById('classificationTo').value.trim().toUpperCase();
+                        if (from && to) {
+                            filteredData = filteredData.filter(d => d.class >= from && d.class <= to);
+                        }
+                        break;
+                    case 'entryDateRange':
+                        const dateFrom = document.getElementById('dateFrom').value;
+                        const dateTo = document.getElementById('dateTo').value;
+                        if (dateFrom && dateTo) {
+                            filteredData = filteredData.filter(d => d.date >= dateFrom && d.date <= dateTo);
+                        }
+                        break;
+                    case 'category':
+                        const category = document.getElementById('categorySelect').value;
+                        filteredData = filteredData.filter(d => d.category === category);
+                        break;
+                    case 'borrowed':
+                        const borrowerName = document.getElementById('borrowerName').value.trim().toLowerCase();
+                        const overdueOnly = document.getElementById('overdueOnly').checked;
+                        filteredData = filteredData.filter(d => d.status === 'borrowed');
+                        if (borrowerName) {
+                            filteredData = filteredData.filter(d => 
+                                d.borrower && d.borrower.toLowerCase().includes(borrowerName)
+                            );
+                        }
+                        if (overdueOnly) {
+                            filteredData = filteredData.filter(d => 
+                                d.returnDate && new Date(d.returnDate) < new Date()
+                            );
+                        }
+                        break;
+                    case 'supplyMethodPurchase':
+                        filteredData = filteredData.filter(d => d.method === 'شراء');
+                        break;
+                    case 'supplyMethodGift':
+                        filteredData = filteredData.filter(d => d.method === 'إهداء');
+                        break;
+                    case 'supplyMethodExchange':
+                        filteredData = filteredData.filter(d => d.method === 'تبادل');
+                        break;
+                    case 'itemTypeReference':
+                        filteredData = filteredData.filter(d => d.type === 'مرجع');
+                        break;
+                    case 'itemTypeBook':
+                        filteredData = filteredData.filter(d => d.type === 'كتاب');
+                        break;
+                    case 'discarded':
+                        filteredData = filteredData.filter(d => d.status === 'discarded');
+                        break;
+                }
+                
+                // Generate table
+                generateTable(filteredData, reportType, reportTitle);
+                
+                // Hide loading and show results
+                document.getElementById('loadingSpinner').style.display = 'none';
+                document.getElementById('reportSection').style.display = 'block';
+            }, 500);
+        }
+
+        // Generate Table
+        function generateTable(data, reportType, reportTitle) {
+            const columns = getTableColumns(reportType);
+            
+            // Update title and counts
+            document.getElementById('reportTitle').textContent = reportTitle;
+            document.getElementById('resultCount').textContent = `${data.length} نتيجة`;
+            document.getElementById('totalResults').textContent = data.length;
+            
+            // Generate header
+            const headerRow = document.getElementById('tableHeader');
+            headerRow.innerHTML = '';
+            columns.forEach(column => {
+                const th = document.createElement('th');
+                th.textContent = column.label;
+                th.className = `text-center ${column.highlight ? 'highlight-column' : ''}`;
+                headerRow.appendChild(th);
+            });
+            
+            // Generate body
+            const tbody = document.getElementById('reportTableBody');
+            tbody.innerHTML = '';
+            
+            if (data.length === 0) {
+                const tr = document.createElement('tr');
+                const td = document.createElement('td');
+                td.colSpan = columns.length;
+                td.className = 'text-center py-5';
+                td.innerHTML = `
+                    <div class="no-data">
+                        <div class="icon">📄</div>
+                        <h5>لا توجد بيانات مطابقة</h5>
+                        <p class="text-muted">يرجى تعديل معايير البحث والمحاولة مرة أخرى</p>
+                    </div>
+                `;
+                tr.appendChild(td);
+                tbody.appendChild(tr);
+            } else {
+                data.forEach((item, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'align-middle';
+                    
+                    columns.forEach(column => {
+                        const td = document.createElement('td');
+                        td.className = `text-center ${column.highlight ? 'highlight-column' : ''}`;
+                        td.innerHTML = renderCellValue(item, column, index + 1);
+                        tr.appendChild(td);
+                    });
+                    
+                    tbody.appendChild(tr);
+                });
+            }
+        }
+
+        // Get table columns based on report type
+        function getTableColumns(reportType) {
+            const baseColumns = [
+                { key: "index", label: "#", highlight: false },
+                { key: "title", label: "عنوان الكتاب", highlight: false },
+                { key: "authors", label: "المؤلفون", highlight: false }
+            ];
+
+            switch(reportType) {
+                case 'classificationRange':
+                    return [
+                        ...baseColumns,
+                        { key: "class", label: "رمز التصنيف", highlight: true },
+                        { key: "serial", label: "الرقم التسلسلي", highlight: false },
+                        { key: "type", label: "نوع المادة", highlight: false },
+                        { key: "status", label: "الحالة", highlight: false }
+                    ];
+                case 'entryDateRange':
+                    return [
+                        ...baseColumns,
+                        { key: "date", label: "تاريخ الإدخال", highlight: true },
+                        { key: "class", label: "رمز التصنيف", highlight: false },
+                        { key: "type", label: "نوع المادة", highlight: false },
+                        { key: "status", label: "الحالة", highlight: false }
+                    ];
+                case 'supplyMethodPurchase':
+                case 'supplyMethodGift':
+                case 'supplyMethodExchange':
+                    return [
+                        ...baseColumns,
+                        { key: "method", label: "طريقة التزويد", highlight: true },
+                        { key: "date", label: "تاريخ الإدخال", highlight: false },
+                        { key: "class", label: "رمز التصنيف", highlight: false },
+                        { key: "status", label: "الحالة", highlight: false }
+                    ];
+                case 'itemTypeReference':
+                case 'itemTypeBook':
+                    return [
+                        ...baseColumns,
+                        { key: "type", label: "نوع المادة", highlight: true },
+                        { key: "class", label: "رمز التصنيف", highlight: false },
+                        { key: "method", label: "طريقة التزويد", highlight: false },
+                        { key: "status", label: "الحالة", highlight: false }
+                    ];
+                case 'category':
+                    return [
+                        ...baseColumns,
+                        { key: "category", label: "الفئة", highlight: true },
+                        { key: "class", label: "رمز التصنيف", highlight: false },
+                        { key: "type", label: "نوع المادة", highlight: false },
+                        { key: "status", label: "الحالة", highlight: false }
+                    ];
+                case 'borrowed':
+                    return [
+                        ...baseColumns,
+                        { key: "borrower", label: "المستعير", highlight: true },
+                        { key: "borrowDate", label: "تاريخ الاستعارة", highlight: true },
+                        { key: "returnDate", label: "تاريخ الإرجاع", highlight: true },
+                        { key: "class", label: "رمز التصنيف", highlight: false }
+                    ];
+                default:
+                    return [
+                        ...baseColumns,
+                        { key: "serial", label: "الرقم التسلسلي", highlight: false },
+                        { key: "class", label: "رمز التصنيف", highlight: false },
+                        { key: "type", label: "نوع المادة", highlight: false },
+                        { key: "method", label: "طريقة التزويد", highlight: false },
+                        { key: "category", label: "الفئة", highlight: false },
+                        { key: "status", label: "الحالة", highlight: false }
+                    ];
+            }
+        }
+
+        // Render cell value
+        function renderCellValue(item, column, index) {
+            switch(column.key) {
+                case 'index':
+                    return index;
+                case 'status':
+                    const statusMap = {
+                        available: { label: "متاح", class: "status-available" },
+                        borrowed: { label: "معار", class: "status-borrowed" },
+                        discarded: { label: "مخرج", class: "status-discarded" }
+                    };
+                    const statusInfo = statusMap[item.status] || { label: item.status, class: "" };
+                    return `<span class="badge ${statusInfo.class} px-2 py-1">${statusInfo.label}</span>`;
+                case 'category':
+                    const categoryMap = {
+                        science: "علمي",
+                        history: "تاريخي", 
+                        literature: "أدب",
+                        economy: "اقتصاد",
+                        religious: "ديني",
+                        political: "سياسة"
+                    };
+                    return categoryMap[item.category] || item.category;
+                default:
+                    return item[column.key] || '-';
+            }
+        }
+
+        // Export Functions
+        function exportToExcel() {
+            const table = document.getElementById('reportTable');
+            const wb = XLSX.utils.table_to_book(table, { sheet: "التقرير" });
+            const reportTitle = document.getElementById('reportTitle').textContent;
+            const fileName = `${reportTitle}_${new Date().toLocaleDateString('ar-EG')}.xlsx`;
+            XLSX.writeFile(wb, fileName);
+        }
+
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
+            // Add Arabic font support (basic)
+            doc.setFont("helvetica", "bold");
+            
+            // Add title
+            const reportTitle = document.getElementById('reportTitle').textContent;
+            doc.text(reportTitle, 105, 15, { align: 'center' });
+            
+            // Add date
+            doc.setFontSize(10);
+            doc.text(`تاريخ التقرير: ${new Date().toLocaleDateString('ar-EG')}`, 15, 25);
+            
+            // Add table
+            doc.autoTable({ 
+                html: '#reportTable',
+                startY: 35,
+                styles: { 
+                    fontSize: 8,
+                    halign: 'center',
+                    cellPadding: 2
+                },
+                headStyles: {
+                    fillColor: [52, 73, 94],
+                    textColor: 255,
+                    fontStyle: 'bold'
+                }
+            });
+            
+            const fileName = `${reportTitle}_${new Date().toLocaleDateString('ar-EG')}.pdf`;
+            doc.save(fileName);
+        }
+    </script>
+</body>
+</html>
