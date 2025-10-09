@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>البحث عن كتاب</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    /* Header Custom Colors */
+    .bg-primary-custom {
+       background-color: #1A0B5B;
+       }
+    .bg-secondary-custom {
+       background-color: #E63946; 
+      }
+    .hover-secondary:hover {
+       color: #E63946 !important;
+       }
+
+    /* Sidebar */
+    .sidebar {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      height: 100%;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    }
+
+    /* Category Buttons */
+    .category-btn {
+      display: block;
+      width: 100%;
+      text-align: right;
+      margin-bottom: 8px;
+      padding: 10px;
+      border: none;
+      background: #ffffff; /* أبيض افتراضي */
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: #000;
+    }
+
+    .category-btn:hover {
+      background: #e0e0e0; /* رمادي فاتح عند المرور بالماوس */
+    }
+
+    .category-btn.active {
+      background: #e0e0e0; /* رمادي فاتح عند التفعيل */
+      color: #000; /* النص يبقى أسود */
+    }
+    .modal-header {
+  background-color: #a9a6a6 !important; /* اللون السكني */
+  color: #000 !important;              /* النص أسود */
+}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="bg-white shadow-sm sticky-top">
+    <div class="container d-flex justify-content-between align-items-center py-2">
+      <a href="index.html">
+        <img src="./assets/img/logo/logo2.png" alt="لوغو المكتبة" class="img-fluid" style="max-width: 180px;"/>
+      </a>
+      <nav class="d-none d-md-flex gap-4">
+        <a class="fw-bold text-dark text-decoration-none hover-secondary" href="index.html">الرئيسية</a>
+        <a class="fw-bold text-dark text-decoration-none hover-secondary" href="about.html">عن المكتبة</a>
+        <a class="fw-bold text-dark text-decoration-none hover-secondary" href="services.html">خدمات المكتبة</a>
+
+        <a class="fw-bold text-dark text-decoration-none hover-secondary" href="search.html">بحث عن كتاب</a>
+        <a class="fw-bold text-dark text-decoration-none hover-secondary" href="contact.html">تواصل معنا</a>
+        <a class="fw-bold text-dark text-decoration-none hover-secondary" href="register.html">تسجيل الدخول</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="container-fluid py-4">
+    <div class="row">
+
+      <!-- Sidebar -->
+      <aside class="col-lg-3 mb-4">
+        <div class="sidebar">
+          <h5 class="fw-bold mb-3">📚 التصنيفات</h5>
+          <button class="category-btn" data-category="0">معارف عامة</button>
+          <button class="category-btn" data-category="100">الفلسفة وعلم النفس</button>
+          <button class="category-btn" data-category="200">الديانات</button>
+          <button class="category-btn" data-category="300">العلوم الاجتماعية</button>
+          <button class="category-btn" data-category="400">اللغات</button>
+          <button class="category-btn" data-category="500">الرياضيات والعلوم الطبيعية</button>
+          <button class="category-btn" data-category="600">العلوم التطبيقية</button>
+          <button class="category-btn" data-category="700">الفنون الجميلة</button>
+          <button class="category-btn" data-category="800">الآداب</button>
+          <button class="category-btn" data-category="900">الجغرافيا والتاريخ</button>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="col-lg-9">
+        <div class="mb-4 text-center">
+          <h2 class="fw-bold text-primary-custom mb-3">
+  <i class="fas fa-search "></i> 
+
+             البحث عن كتاب</h2>
+          <form id="searchForm" class="row g-2 justify-content-center">
+            <div class="col-md-3">
+              <select id="searchType" class="form-select">
+                <option value="title">عنوان الكتاب</option>
+                <option value="author">اسم المؤلف</option>
+                <option value="subject">رأس الموضوع</option>
+              </select>
+            </div>
+            <div class="col-md-5">
+              <input type="text" id="searchInput" class="form-control" placeholder="اكتب كلمة البحث...">
+            </div>
+            <div class="col-md-2">
+              <button type="submit" class="btn bg-secondary-custom text-white w-100">بحث</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="row g-4"></div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Modal للتفاصيل -->
+  <div class="modal fade" id="bookModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-primary-custom text-white">
+          <h5 class="modal-title" id="bookTitle"></h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p><strong>رقم التصنيف:</strong> <span id="bookCategory"></span></p>
+          <p><strong>المؤلف:</strong> <span id="bookAuthor"></span></p>
+          <p><strong>الناشر:</strong> <span id="bookPublisher"></span></p>
+          <p><strong>سنة النشر:</strong> <span id="bookYear"></span></p>
+          <p><strong>الطبعة:</strong> <span id="bookEdition"></span></p>
+          <p><strong>عدد الصفحات:</strong> <span id="bookPages"></span></p>
+          <p><strong>رأس الموضوع:</strong> <span id="bookSubject"></span></p>
+          <div class="modal-footer">
+            <a class="btn btn-danger" href="./register.html">📌 احجز الكتاب</a>
+            <button class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+            
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- JavaScript -->
+  <script>
+    const searchForm = document.getElementById("searchForm");
+    const searchInput = document.getElementById("searchInput");
+    const searchType = document.getElementById("searchType");
+    const results = document.getElementById("results");
+
+    const books = [
+      { title: "مدخل إلى المعرفة", author: "أحمد زكي", subject: "مقدمة عامة", year: 2000, publisher: "دار المعارف", edition: "الأولى", pages: 220, category: 0 },
+      { title: "تأملات في الفلسفة", author: "ابن سينا", subject: "فلسفة", year: 1020, publisher: "دار الفكر", edition: "الثانية", pages: 340, category: 100 },
+      { title: "مدخل إلى علم النفس", author: "سيغموند فرويد", subject: "علم النفس", year: 1920, publisher: "المطبعة العلمية", edition: "الأولى", pages: 280, category: 100 },
+      { title: "القرآن الكريم", author: "—", subject: "دين إسلامي", year: 610, publisher: "—", edition: "—", pages: 604, category: 200 },
+      { title: "الكتاب المقدس", author: "—", subject: "دين مسيحي", year: 100, publisher: "—", edition: "—", pages: 1200, category: 200 },
+      { title: "علم الاجتماع", author: "ابن خلدون", subject: "العلوم الاجتماعية", year: 1377, publisher: "دار الفكر", edition: "الأولى", pages: 700, category: 300 },
+      { title: "معجم اللغة العربية", author: "الخليل بن أحمد", subject: "لغة", year: 800, publisher: "دار الكتب", edition: "الثانية", pages: 500, category: 400 },
+      { title: "الرياضيات الحديثة", author: "إقليدس", subject: "رياضيات", year: -300, publisher: "دار العلوم", edition: "الثالثة", pages: 400, category: 500 },
+      { title: "الكيمياء العامة", author: "جابر بن حيان", subject: "علوم طبيعية", year: 815, publisher: "دار الحكمة", edition: "الأولى", pages: 350, category: 500 },
+      { title: "أساسيات الهندسة", author: "أرشيميدس", subject: "الهندسة التطبيقية", year: -200, publisher: "دار التقنية", edition: "الأولى", pages: 380, category: 600 },
+      { title: "الفن الإسلامي", author: "محمد علي", subject: "فن", year: 1990, publisher: "دار الفنون", edition: "الأولى", pages: 220, category: 700 },
+      { title: "الأيام", author: "طه حسين", subject: "سيرة ذاتية", year: 1929, publisher: "دار المعارف", edition: "الأولى", pages: 300, category: 800 },
+      { title: "رجال في الشمس", author: "غسان كنفاني", subject: "رواية فلسطينية", year: 1963, publisher: "المؤسسة العربية", edition: "الثانية", pages: 150, category: 800 },
+      { title: "الحرب والسلام", author: "ليو تولستوي", subject: "رواية تاريخية", year: 1869, publisher: "دار التقدم", edition: "الثالثة", pages: 1225, category: 900 }
+    ];
+
+    // عرض الكتب
+    function renderBooks(filtered) {
+      if (filtered.length === 0) {
+        results.innerHTML = `<p class="text-center text-danger">❌ لا توجد نتائج مطابقة.</p>`;
+        return;
+      }
+      results.innerHTML = filtered.map(book => `
+        <div class="col-md-4">
+          <div class="card shadow-sm h-100 p-3">
+            <h5 class="fw-bold">${book.title}</h5>
+            <p class="mb-1"><strong>المؤلف:</strong> ${book.author}</p>
+            <p class="text-muted"><strong>الموضوع:</strong> ${book.subject}</p>
+            <button class="btn btn-outline-danger w-100" 
+              data-bs-toggle="modal" data-bs-target="#bookModal"
+              onclick='showDetails(${JSON.stringify(book)})'>التفاصيل</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    // إظهار تفاصيل كتاب
+    function showDetails(book) {
+      document.getElementById("bookTitle").innerText = book.title;
+      document.getElementById("bookCategory").innerText = book.category;
+      document.getElementById("bookAuthor").innerText = book.author;
+      document.getElementById("bookPublisher").innerText = book.publisher;
+      document.getElementById("bookYear").innerText = book.year;
+      document.getElementById("bookEdition").innerText = book.edition;
+      document.getElementById("bookPages").innerText = book.pages;
+      document.getElementById("bookSubject").innerText = book.subject;
+    }
+
+    // البحث
+    searchForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const query = searchInput.value.trim().toLowerCase();
+      const type = searchType.value;
+      const filtered = books.filter(book => book[type].toString().toLowerCase().includes(query));
+      renderBooks(filtered);
+    });
+
+    // الفلترة عند الضغط على تصنيف مع تفعيل اللون
+    document.querySelectorAll(".category-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".category-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        const category = parseInt(btn.getAttribute("data-category"));
+        const filtered = books.filter(book => book.category === category);
+        renderBooks(filtered);
+      });
+    });
+
+    // أول تحميل: عرض كل الكتب
+    renderBooks(books);
+  </script>
+
+</body>
+</html>

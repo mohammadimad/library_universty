@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>إنشاء حساب جديد</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+</head>
+
+<body class="bg-light">
+  <div class="container my-4">
+
+    <!-- شعار -->
+    <div class="text-center mb-4">
+      <a href="./index.html"><img src="./assets/img/logo/مكتبة (1).webp" alt="شعار المكتبة" width="100" class="mb-2" /></a>
+      <h3 class="fw-bold">إنشاء حساب جديد</h3>
+    </div>
+
+    <!-- التابات -->
+    <div class="container my-4">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="A1-tab" data-bs-toggle="tab" data-bs-target="#A1-tab-pane" type="button" role="tab" aria-controls="A1-tab-pane" aria-selected="true">
+            بيانات المشترك
+          </button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="A2-tab" data-bs-toggle="tab" data-bs-target="#A2-tab-pane" type="button" role="tab" aria-controls="A2-tab-pane" aria-selected="false">
+            بيانات الكفيل
+          </button>
+        </li>
+      </ul>
+
+      <div class="tab-content p-3 bg-white shadow-sm" id="myTabContent">
+        
+        <!-- بيانات المشترك -->
+        <div class="tab-pane fade show active" id="A1-tab-pane" role="tabpanel" aria-labelledby="A1-tab">
+  <form>
+    <div class="container">
+      <div class="row g-3">
+
+        <!-- رقم المشترك -->
+        <div class="col-md-3">
+          <label class="form-label">رقم المشترك</label>
+          <input
+            id="subscriber_id"
+            name="subscriber_id"
+            type="text"
+            class="form-control"
+            value="SUB-0001"
+            readonly
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label required">اسم المشترك</label>
+          <input name="full_name" type="text" class="form-control" placeholder="الاسم الكامل" />
+        </div>
+
+
+                <div class="col-md-4">
+                  <label class="form-label">تاريخ الميلاد</label>
+                  <input name="birth_date" id="birth_date" type="date" class="form-control" />
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">الجنس</label>
+                  <select name="gender" id="gender" class="form-select">
+                    <option value="">اختر...</option>
+                    <option value="male">ذكر</option>
+                    <option value="female">أنثى</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">رقم الهوية</label>
+                  <input name="id_number" id="id_number" type="text" class="form-control" />
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">المحافظة</label>
+                  <select name="province" id="province" class="form-select">
+                     <option value="أريحا والأغوار">أريحا والأغوار</option>
+                    <option value="بيت لحم">بيت لحم</option>
+                    <option value="الخليل">الخليل</option>
+                    <option value="القدس">القدس</option>
+                    <option value="دير البلح">دير البلح</option>
+                    <option value="رفح">رفح</option>
+                    <option value="سلفيت">سلفيت</option>
+                    <option value="شمال غزة">شمال غزة</option>
+                    <option value="طوباس">طوباس</option>
+                    <option value="طولكرم">طولكرم</option>
+                    <option value="غزة">غزة</option>
+                    <option value="قلقيلية">قلقيلية</option>
+                    <option value="خان يونس">خان يونس</option>
+                    <option value="نابلس">نابلس</option>
+                    <option value="جنين">جنين</option>
+                    <option value="رام الله والبيرة">رام الله والبيرة</option>
+                  </select>
+                </div>
+
+                <div class="col-md-3">
+                  <label class="form-label">الوظيفة</label>
+                  <input name="work" id="work" type="text" class="form-control" />
+                </div>
+
+                <!-- رقم الموبايل مع + -->
+                <div class="col-md-3">
+                  <label class="form-label">رقم الموبايل</label>
+                  <div id="subscriberMobileNumbersGroup">
+                    <div class="input-group mb-2">
+                      <input name="phone_mobile[]" type="tel" class="form-control" placeholder="رقم الموبايل" />
+                      <button type="button" class="btn btn-outline-success" onclick="addMobileField('subscriberMobileNumbersGroup')">+</button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-md-12">
+                  <label class="form-label">العنوان</label>
+                  <div class="row g-2">
+                    <div class="col-md-4">
+                      <input name="address1" id="address1" type="text" class="form-control" placeholder="القرية/الضاحية" />
+                    </div>
+                    <div class="col-md-4">
+                      <input name="address2" id="address2" type="text" class="form-control" placeholder="الحي" />
+                    </div>
+                    <div class="col-md-4">
+                      <input name="address3" id="address3" type="text" class="form-control" placeholder="الشارع" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- زر التالي -->
+              <div class="mt-4 text-end">
+                <button type="button" class="btn btn-danger" id="nextBtn">التالي</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- بيانات الكفيل -->
+        <div class="tab-pane fade" id="A2-tab-pane" role="tabpanel" aria-labelledby="A2-tab">
+          <form>
+            <div class="container">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">اسم الكفيل</label>
+                  <input name="guarantor_name" type="text" class="form-control" placeholder="اسم الكفيل" />
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">الوظيفة</label>
+                  <input name="guarantor_work" type="text" class="form-control" placeholder="وظيفة الكفيل" />
+                </div>
+
+                <div class="col-md-12">
+                  <label class="form-label">عنوان الكفيل</label>
+                  <div class="row g-2">
+                    <div class="col-md-4">
+                      <input name="guarantor_address1" type="text" class="form-control" placeholder="القرية/الضاحية" />
+                    </div>
+                    <div class="col-md-4">
+                      <input name="guarantor_address2" type="text" class="form-control" placeholder="الحي" />
+                    </div>
+                    <div class="col-md-4">
+                      <input name="guarantor_address3" type="text" class="form-control" placeholder="الشارع" />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- رقم الموبايل مع + -->
+                <div class="col-md-6">
+                  <label class="form-label">رقم الموبايل</label>
+                  <div id="guarantorMobileNumbersGroup">
+                    <div class="input-group mb-2">
+                      <input name="guarantor_phone[]" type="tel" class="form-control" placeholder="رقم الموبايل" />
+                      <button type="button" class="btn btn-outline-success" onclick="addMobileField('guarantorMobileNumbersGroup')">+</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- زر انشاء الحساب -->
+              <div class="mt-4 text-end">
+                <button type="button" class="btn btn-danger w-100" onclick="showMessage()">إنشاء حساب</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // زر التالي: ينقل للتاب الكفيل
+    document.getElementById("nextBtn").addEventListener("click", function () {
+      var triggerEl = document.querySelector('#A2-tab');
+      var tab = new bootstrap.Tab(triggerEl);
+      tab.show();
+    });
+
+    // إضافة حقل موبايل جديد
+    function addMobileField(containerId) {
+      const group = document.getElementById(containerId);
+      const div = document.createElement("div");
+      div.classList.add("input-group", "mb-2");
+      div.innerHTML = `
+        <input type="tel" name="${containerId === 'subscriberMobileNumbersGroup' ? 'phone_mobile[]' : 'guarantor_phone[]'}" class="form-control" placeholder="رقم الموبايل" />
+        <button type="button" class="btn btn-outline-danger" onclick="removeField(this)">-</button>
+      `;
+      group.appendChild(div);
+    }
+
+    // حذف حقل
+    function removeField(btn) {
+      btn.parentElement.remove();
+    }
+
+    // رسالة عند انشاء الحساب
+    function showMessage() {
+      alert("شكراً لانضمامك لمكتبتنا، تم إرسال طلبك للموظف، يرجى مراجعة المكتبة.");
+    }
+  </script>
+</body>
+</html>

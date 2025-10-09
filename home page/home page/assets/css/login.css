@@ -1,0 +1,13 @@
+
+body { 
+    font-family: 'Cairo', sans-serif; 
+} 
+.tab-button {    
+    cursor: pointer;           
+}
+.tab-button.active { 
+    border-bottom: 3px solid #dc3545; font-weight: bold; color: black; 
+}
+.tab-button.inactive { 
+    color: #6c757d;
+ }

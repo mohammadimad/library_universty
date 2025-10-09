@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>الخدمات والسياسات - مكتبة بلدية طولكرم</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #f8f9fa;
+      color: #212529;
+    }
+
+    .bg-primary-custom {
+      background-color: #1A0B5B;
+    }
+
+    .text-primary-custom {
+      color: #1A0B5B;
+    }
+
+    .bg-secondary-custom {
+      background-color: #E63946;
+    }
+
+    .text-secondary-custom {
+      color: #E63946;
+    }
+
+    .hover-secondary:hover {
+      color: #E63946 !important;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="d-flex flex-column min-vh-100">
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm sticky-top">
+      <div class="container d-flex justify-content-between align-items-center py-1">
+        <a href="./index.html">
+          <img src="./assets/img/logo/logo2.png" alt="لوغو المكتبة" class="img-fluid" style="max-width: 250px; height: auto;"/>
+        </a>
+        <nav class="d-none d-md-flex gap-4">
+          <a class="fw-bold text-dark text-decoration-none hover-secondary" href="index.html">الرئيسية</a>
+          <a class="fw-bold text-dark text-decoration-none hover-secondary" href="about.html">عن المكتبة</a>
+          <a class="fw-bold text-dark text-decoration-none hover-secondary" href="services.html">خدمات المكتبة</a>
+          <a class="fw-bold text-dark text-decoration-none hover-secondary" href="search.html">بحث عن كتاب</a>
+          <a class="fw-bold text-dark text-decoration-none hover-secondary" href="contact.html">تواصل معنا</a>
+          <a class="fw-bold text-dark text-decoration-none hover-secondary" href="register.html">تسجيل الدخول</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="position-relative text-center d-flex align-items-center" style="min-height: 40vh;">
+      <div class="position-absolute top-0 start-0 w-100 h-100"
+        style="background: url('./assets/img/back/خلفيه.png') center/cover no-repeat;"></div>
+      <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark opacity-50"></div>
+      <div class="container position-relative py-5 text-white">
+        <h1 class="fw-black display-5 mb-3">الخدمات والسياسات</h1>
+        <p class="lead mb-0">تعرف على خدمات مكتبة بلدية طولكرم   </p>
+      </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-5">
+      <div class="container">
+        <h2 class="text-center text-dark fw-bold mb-3 border-bottom border-3 border-secondary-custom d-inline-block pb-2">
+          الخدمات
+        </h2>
+        <p class="mb-5">تقدم البلدية مجموعة من الخدمات لتلبية احتياجات المواطنين والموظفين، بالإضافة إلى الباحثين داخل وخارج البلدية. </p>
+
+        <div class="accordion shadow-sm" id="servicesAccordion">
+          <div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#serviceOne">
+      الإعارة  
+    </button>
+  </h2>
+  <div id="serviceOne" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+    <div class="accordion-body">
+      <p>
+        توفر مكتبة بلدية طولكرم خدمة <strong>الإعارة الداخلية والخارجية</strong> لجميع المستفيدين من طلاب، باحثين، وموظفين.
+      </p>
+      <ul>
+        <li>يمكن استعارة الكتب والمراجع داخل قاعات المكتبة (إعارة داخلية).</li>
+        <li>إتاحة استعارة الكتب إلى خارج المكتبة لمدة 14 يوم وفق الأنظمة المعمول بها (إعارة خارجية).</li>
+        <li>يشترط إبراز بطاقة هوية أو بطاقة المكتبة عند الاستعارة.</li>
+        <li>يجب إعادة الكتب في الموعد المحدد لتجنب الغرامات.</li>
+        <li>يمكن تجديد فترة الإعارة إذا لم يكن الكتاب محجوزاً من قبل مستخدم آخر.</li>
+        <li>لتجديد الأشتراك يجب الحضور شخصياً إلى المكتبة.</li>
+
+      </ul>
+    </div>
+  </div>
+</div>
+
+          <div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#serviceTwo">
+      خدمات التصوير
+    </button>
+  </h2>
+  <div id="serviceTwo" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+    <div class="accordion-body">
+      <p>
+        توفر مكتبة بلدية طولكرم خدمة <strong>التصوير والطباعة</strong> لتلبية احتياجات المستفيدين من نسخ الوثائق والكتب والمراجع.
+      </p>
+      <ul>
+        <li>تصوير الصفحات من الكتب والمراجع المتوفرة داخل المكتبة وفق أنظمة حقوق النشر.</li>
+        <li>خدمة الطباعة للملفات الإلكترونية (Word، PDF) المتاحة عبر أجهزة المكتبة.</li>
+        <li>إمكانية الحصول على نسخ ملونة أو أبيض وأسود.</li>
+        <li>تحديد رسوم رمزية لكل صفحة مطبوعة أو مصورة.</li>
+        <li>الخدمة متاحة للطلاب، الموظفين، والباحثين داخل المكتبة.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+          <div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#serviceThree">
+      الخدمات الإلكترونية
+    </button>
+  </h2>
+  <div id="serviceThree" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+    <div class="accordion-body">
+      <p>
+        تسعى مكتبة بلدية طولكرم إلى مواكبة التطور التكنولوجي عبر تقديم مجموعة من
+        <strong>الخدمات الإلكترونية</strong> التي تسهّل على المستفيدين الوصول إلى مصادر المعلومات والاستفادة من خدمات المكتبة عن بُعد.
+      </p>
+      <ul>
+        <li>إمكانية البحث عن الكتب من خلال <a href="search.html" class="text-primary fw-bold">الفهرس الإلكتروني</a>.</li>
+        <li>   امكانية حجز الكتاب إلكترونياً مع الحاجة الحاجة لمراجعة المكتبة من اجل استلام الكتاب.</li>
+        <li>الوصول إلى قواعد بيانات رقمية ومصادر إلكترونية للدراسات والبحوث.</li>
+        <li>خدمة طلب الأشتراك إلكترونياً و تفعيل الحساب عند الزيارة.</li>
+        <li>التواصل المباشر مع موظفي المكتبة عبر الأرقام المرفقة.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+
+          
+          <div class="accordion-item">
+  <h2 class="accordion-header">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#libraryRules">
+      تعليمات المكتبة
+    </button>
+  </h2>
+  <div id="libraryRules" class="accordion-collapse collapse" data-bs-parent="#servicesAccordion">
+    <div class="accordion-body">
+      <p>لضمان استفادة جميع الزوار والمراجعين من خدمات مكتبة بلدية طولكرم، يرجى الالتزام بالتعليمات التالية:</p>
+      <ul>
+        <li>الالتزام بقواعد استخدام أجهزة الكمبيوتر وخدمة الإنترنت داخل المكتبة.</li>
+        <li>المحافظة على هدوء المكتبة وعدم إزعاج الآخرين أثناء البحث والدراسة.</li>
+        <li>عدم نقل الكتب والمراجع خارج المكتبة دون استكمال إجراءات الإعارة.</li>
+      </ul>
+      <p>نحن نحرص على تقديم أفضل الخدمات لجميع المستفيدين، وشكراً لتعاونكم.</p>
+    </div>
+  </div>
+</div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-white bg-dark bg-opacity-75 mt-auto">
+      <div class="container py-5">
+        <div class="row text-start text-md-center">
+          <div class="col-md-6 col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3 text-danger">عن المكتبة</h6>
+            <p> مكتبة بلدية طولكرم تسعى لتوفير مصادر المعرفة والمعلومات لجميع فئات المجتمع، وتعزيز الثقافة والبحث
+                العلمي.</p>
+          </div>
+          <div class="col-md-6 col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3 text-danger">تواصل معنا</h6>
+            <ul class="list-unstyled">
+              <li><i class="bi bi-geo-alt me-2"></i> طولكرم - فلسطين</li>
+              <li><i class="bi bi-telephone me-2"></i> 092-345678</li>
+              <li><i class="bi bi-envelope me-2"></i> info@library.com</li>
+            </ul>
+          </div>
+          <div class="col-md-12 col-lg-4 mb-4">
+            <h6 class="fw-bold mb-3 text-danger">روابط سريعة</h6>
+            <ul class="list-unstyled">
+              <li><a href="index.html" class="text-white text-decoration-none hover-secondary">الرئيسية</a></li>
+              <li><a href="about.html" class="text-white text-decoration-none hover-secondary">عن المكتبة</a></li>
+              <li><a href="search.html" class="text-white text-decoration-none hover-secondary">بحث عن كتاب</a></li>
+              <li><a href="services-policies.html" class="text-white text-decoration-none hover-secondary">الخدمات</a></li>
+              <li><a href="contact.html" class="text-white text-decoration-none hover-secondary">تواصل معنا</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="text-center py-3 bg-dark bg-opacity-75">
+        <p class="mb-0">حقوق النشر © 2025 مكتبة بلدية طولكرم، كل الحقوق محفوظة.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
